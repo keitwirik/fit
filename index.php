@@ -77,13 +77,11 @@ nav.chart_nav ul li {
 <script type="text/javascript" src="js/plugins/jqplot.trendline.min.js"></script>
 <script type="text/javascript">
 
-$.jqplot.config.enablePlugins = true;
-$.jqplot.config.color = '#123123';
-
 $(document).ready(function(){
-  // Our ajax data renderer which here retrieves a text file.
-  // it could contact any source and pull data, however.
-  // The options argument isn't used in this renderer.
+
+  $.jqplot.config.enablePlugins = true;
+  $.jqplot.config.color = '#123123';
+
   var ajaxDataRenderer = function(url, plot, options) {
     var ret = null;
     $.ajax({
@@ -101,92 +99,79 @@ $(document).ready(function(){
  
   // The url for our json data
   var jsonurl = "./jsondata.php";
-  // passing in the url string as the jqPlot data argument is a handy
-  // shortcut for our renderer.  You could also have used the
-  // "dataRendererOptions" option to pass in the url.
-  var plot2 = $.jqplot('chartdiv', jsonurl,{
-    title: "AJAX JSON Data Renderer",
+
+  // jplot chart options
+  var chartoptions = {
+    title: 'Weight Graph',
     dataRenderer: ajaxDataRenderer,
     dataRendererOptions: {
       unusedOptionalUrl: jsonurl
     },
-      series: [{
-        color:'orange'
-      }]
-  });  
-});
-
-
-// jplot chart options
-var chartoptions = {
-      title: 'Weight Graph',
-      // You can specify options for all axes on the plot at once with
-      // the axesDefaults object.  Here, we're using a canvas renderer
-      axesDefaults: {
-        labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+    axesDefaults: {
+      labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+    },
+    axes: {
+      xaxis: {
+        label: "Days",
+        pad: 0
       },
-      // An axes object holds options for all axes.
-      // Allowable axes are xaxis, x2axis, yaxis, y2axis, y3axis, ...
-      axes: {
-        // options for each axis are specified in seperate option objects.
-        xaxis: {
-          label: "Days",
-          // Turn off "padding".  This will allow data point to lie on the
-          // edges of the grid.  Default padding is 1.2 and will keep all
-          pad: 0
-        },
-        yaxis: {
-          label: "Weight",
-          min:150,
-          max:220
-        }
+      yaxis: {
+        label: "Weight",
+        min:195,
+        max:206
       }
-}
+    },
+    series: [{
+      color:'orange'
+    }]
+    }
+    $.jqplot('chartdiv', jsonurl, chartoptions);  
 
-var gridColModel = [ 
-      {name:'timestamp', index:'timestamp', width:135, 
-        cellattr: function (rowId, tv, rawObject, cm, rdata) { 
-                  return 'style="background:LightGray"'; 
-                  },
-        editable:false,editoptions:{size:10}
-      }, 
-      {name:'weight', index:'weight', width:70, align:'right', 
-        cellattr: function(rowId, val, rawObject, cm, rdata){
-                  weight_arr.push([parseFloat(rowId), parseFloat(val)]);
-            //      console.log('weight_ar ' +weight_arr);
-                  return cell_bg(val,cm) },editable:true,editoptions:{size:10}
-      },
-      {name:'bmi', index:'bmi', width:70, align:'right',
-        cellattr: function(rowId, val, rawObject, cm, rdata){
-                  return cell_bg(val,cm) },editable:true,editoptions:{size:10}
-      }, 
-      {name:'body_fat', index:'body_fat', width:70, align:'right',
-        cellattr: function(rowId, val, rawObject, cm, rdata){
-                  return cell_bg(val,cm) },editable:true,editoptions:{size:10}
-      }, 
-      {name:'muscle', index:'muscle', width:70, align:'right',
-        cellattr: function(rowId, val, rawObject, cm, rdata){
-                  return cell_bg(val,cm) },editable:true,editoptions:{size:10}
-      }, 
-      {name:'body_age', index:'body_age', width:70, align:'right', 
-        cellattr: function(rowId, val, rawObject, cm, rdata){
-                  return cell_bg(val,cm) },editable:true,editoptions:{size:10}
-      },
-      {name:'visceral_fat', index:'visceral_fat', width:70, align:'right',
-        cellattr: function(rowId, val, rawObject, cm, rdata){
-                  return cell_bg(val,cm) },editable:true,editoptions:{size:10}
-      }, 
-      {name:'waist', index:'waist', width:60, align:'right',
-        cellattr: function(rowId, val, rawObject, cm, rdata){
-                  return cell_bg(val,cm) },editable:true,editoptions:{size:10}
-      },
-      {name:'rm', index:'rm', width:45, align:'right',
-        editable:true,editoptions:{size:10} 
-      } 
-    ]
 
-// return value ranges for various cols
-function col_vals(cm){
+  var gridColModel = [ 
+    {name:'timestamp', index:'timestamp', width:135, 
+      cellattr: function (rowId, tv, rawObject, cm, rdata) { 
+                return 'style="background:LightGray"'; 
+                },
+      editable:false,editoptions:{size:10}
+    }, 
+    {name:'weight', index:'weight', width:70, align:'right', 
+      cellattr: function(rowId, val, rawObject, cm, rdata){
+                weight_arr.push([parseFloat(rowId), parseFloat(val)]);
+          //      console.log('weight_ar ' +weight_arr);
+                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+    },
+    {name:'bmi', index:'bmi', width:70, align:'right',
+      cellattr: function(rowId, val, rawObject, cm, rdata){
+                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+    }, 
+    {name:'body_fat', index:'body_fat', width:70, align:'right',
+      cellattr: function(rowId, val, rawObject, cm, rdata){
+                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+    }, 
+    {name:'muscle', index:'muscle', width:70, align:'right',
+      cellattr: function(rowId, val, rawObject, cm, rdata){
+                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+    }, 
+    {name:'body_age', index:'body_age', width:70, align:'right', 
+      cellattr: function(rowId, val, rawObject, cm, rdata){
+                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+    },
+    {name:'visceral_fat', index:'visceral_fat', width:70, align:'right',
+      cellattr: function(rowId, val, rawObject, cm, rdata){
+                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+    }, 
+    {name:'waist', index:'waist', width:60, align:'right',
+      cellattr: function(rowId, val, rawObject, cm, rdata){
+                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+    },
+    {name:'rm', index:'rm', width:45, align:'right',
+      editable:true,editoptions:{size:10} 
+    } 
+  ]
+
+  // return value ranges for various cols
+  function col_vals(cm){
     if(cm.index == 'weight')return 185;
     if(cm.index == 'bmi')return 25;
     if(cm.index == 'body_fat'){
@@ -203,10 +188,10 @@ function col_vals(cm){
         var range_arr = new Array(34,36,40);
         return range_arr;
     }    
-}
+  }
 
-// style the cell backgrounds
-function cell_bg(val,cm){
+  // style the cell backgrounds
+  function cell_bg(val,cm){
     var range = col_vals(cm);
     var bgcolor = "LightGreen";
     if(range instanceof Array){
@@ -220,39 +205,48 @@ function cell_bg(val,cm){
         }
     }
     return 'style="background:' + bgcolor + '"';
-}
+  }
 
-// update grid for different users
-function reloadEvents(){
-$('h1.user').click(function(){
-    $('#list').setGridParam({url:'example.php'}); 
-    $('#list').trigger("reloadGrid");  
-});
-}
+  // update grid for different users
+  function reloadEvents(){
+    $('h1.user').click(function(){
+      $('#list').setGridParam({url:'example.php'}); 
+      $('#list').trigger("reloadGrid");  
+    });
+  }
 
 
-// FIXME generate array for the chart
-function weightchart() {
-//    var data[0] = weight_arr;
-//    console.log('weight_arr' + weight_arr);
-   var data = [[]];
-   data[0].push($('#list').jqGrid('getRowData',2));
-//    data[0].push([1,205],[2,204],[3,200],[4,200],[5,201.5],[7,203.5]);
-    console.log(data);
-//    for (var i=0; i<13; i+=0.5) {
-//      data[0].push([i, Math.sin(i)]);
-//    }
-  return data;
-}
+  // FIXME generate array for the chart
+  function weightchart() {
+  //    var data[0] = weight_arr;
+  //    console.log('weight_arr' + weight_arr);
+     var data = [[]];
+     data[0].push($('#list').jqGrid('getRowData',2));
+  //    data[0].push([1,205],[2,204],[3,200],[4,200],[5,201.5],[7,203.5]);
+      console.log(data);
+  //    for (var i=0; i<13; i+=0.5) {
+  //      data[0].push([i, Math.sin(i)]);
+  //    }
+    return data;
+  }
 
-weight_arr = new Array();
+  weight_arr = new Array();
 
-$(function(){ 
   $("#list").jqGrid({
     url:'example.php',
     datatype: 'xml',
     mtype: 'GET',
-    colNames:['timestamp', 'weight','bmi','body fat','muscle','body age','visceral fat','waist','rm'],
+    colNames:[
+      'timestamp', 
+      'weight',
+      'bmi',
+      'body fat',
+      'muscle',
+      'body age',
+      'visceral fat',
+      'waist',
+      'rm'
+    ],
     colModel : gridColModel,
     pager: '#pager',
     rowNum:10,
@@ -273,12 +267,14 @@ $(function(){
     caption:"Add a new measurment", 
     buttonicon:"ui-icon-add", 
     onClickButton: function(){ 
-       $("#list").jqGrid('editGridRow', "new", {height:250,reloadAfterSubmit:false});
+      $("#list").jqGrid('editGridRow', "new", {
+        height:250,
+        reloadAfterSubmit:false
+      });
     }, 
     position:"last"
    }) 
-}); 
-$('.ui-icon-seek-end').click();
+}); // end of big long function 
 </script>
 
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="/js/excanvas.js"></script><![endif]-->
