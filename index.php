@@ -31,6 +31,7 @@ $user= get_user($user_id);
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Body Monitor</title>
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> 
+<link rel="stylesheet" type="text/css" media="screen" href="css/reset.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/humanity/jquery-ui-1.8.17.custom.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" />
 <link rel="stylesheet" type="text/css" href="css/jquery.jqplot.css" /> 
@@ -43,9 +44,16 @@ html, body {
 }
 
 #envelope {
-    margin:10px 2%;
+    margin:10px auto;
     width:775px;
+    border:1px dotted #aaa;
+    padding:10px;
+    border-radius:10px;
 }
+
+#envelope header h1 {float:left;margin-right:10px;}
+
+header {display:block;}
 
 div.ui-jqgrid-bdiv {height:250px;}
 
@@ -66,6 +74,13 @@ nav.chart_nav ul li {
     font-size:15px;
 }
 
+body #editmodlist {
+    font-size:18px;
+    position:fixed!important;
+    top:10px!important;
+    margin:0 auto!important;
+    left:33%!important;
+}
 </style>
  
 <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
@@ -127,7 +142,7 @@ $(document).ready(function(){
     }
     $.jqplot('chartdiv', jsonurl, chartoptions);  
 
-
+  var formEditSize = 15;
   var gridColModel = [ 
     {name:'timestamp', index:'timestamp', width:135, 
       cellattr: function (rowId, tv, rawObject, cm, rdata) { 
@@ -137,36 +152,36 @@ $(document).ready(function(){
     }, 
     {name:'weight', index:'weight', width:70, align:'right', 
       cellattr: function(rowId, val, rawObject, cm, rdata){
-                weight_arr.push([parseFloat(rowId), parseFloat(val)]);
+          //      weight_arr.push([parseFloat(rowId), parseFloat(val)]);
           //      console.log('weight_ar ' +weight_arr);
-                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+                return cell_bg(val,cm) },editable:true,editoptions:{size:formEditSize}
     },
     {name:'bmi', index:'bmi', width:70, align:'right',
       cellattr: function(rowId, val, rawObject, cm, rdata){
-                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+                return cell_bg(val,cm) },editable:true,editoptions:{size:formEditSize}
     }, 
     {name:'body_fat', index:'body_fat', width:70, align:'right',
       cellattr: function(rowId, val, rawObject, cm, rdata){
-                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+                return cell_bg(val,cm) },editable:true,editoptions:{size:formEditSize}
     }, 
     {name:'muscle', index:'muscle', width:70, align:'right',
       cellattr: function(rowId, val, rawObject, cm, rdata){
-                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+                return cell_bg(val,cm) },editable:true,editoptions:{size:formEditSize}
     }, 
     {name:'body_age', index:'body_age', width:70, align:'right', 
       cellattr: function(rowId, val, rawObject, cm, rdata){
-                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+                return cell_bg(val,cm) },editable:true,editoptions:{size:formEditSize}
     },
     {name:'visceral_fat', index:'visceral_fat', width:70, align:'right',
       cellattr: function(rowId, val, rawObject, cm, rdata){
-                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+                return cell_bg(val,cm) },editable:true,editoptions:{size:formEditSize}
     }, 
     {name:'waist', index:'waist', width:60, align:'right',
       cellattr: function(rowId, val, rawObject, cm, rdata){
-                return cell_bg(val,cm) },editable:true,editoptions:{size:10}
+                return cell_bg(val,cm) },editable:true,editoptions:{size:formEditSize}
     },
     {name:'rm', index:'rm', width:45, align:'right',
-      editable:true,editoptions:{size:10} 
+      editable:true,editoptions:{size:formEditSize} 
     } 
   ]
 
@@ -217,18 +232,18 @@ $(document).ready(function(){
 
 
   // FIXME generate array for the chart
-  function weightchart() {
+  //function weightchart() {
   //    var data[0] = weight_arr;
   //    console.log('weight_arr' + weight_arr);
-     var data = [[]];
-     data[0].push($('#list').jqGrid('getRowData',2));
+  //   var data = [[]];
+  //   data[0].push($('#list').jqGrid('getRowData',2));
   //    data[0].push([1,205],[2,204],[3,200],[4,200],[5,201.5],[7,203.5]);
-      console.log(data);
+  //    console.log(data);
   //    for (var i=0; i<13; i+=0.5) {
   //      data[0].push([i, Math.sin(i)]);
   //    }
-    return data;
-  }
+  //  return data;
+  //}
 
   weight_arr = new Array();
 
@@ -249,7 +264,7 @@ $(document).ready(function(){
     ],
     colModel : gridColModel,
     pager: '#pager',
-    rowNum:10,
+    rowNum:20,
     rowList:[10,20,30],
     sortname: 'timestamp',
     sortorder: 'asc',
@@ -259,17 +274,27 @@ $(document).ready(function(){
     caption: '<?php echo $user->name; ?>\'s Progress',
     editurl: 'edit.php',
     //loadComplete: [reloadEvents, $.jqplot('chartdiv', chartoptions).replot()]
-    loadComplete: [reloadEvents]
+    loadComplete: [reloadEvents],
+    beforeShowForm: function(formid) {
+       // "editmodlist"
+       $("#editmodlist").css({
+            'position': 'absolute',
+            'top': '10px',
+            'margin':'auto'
+        });
+    } 
   })
-  .setGridHeight(225,true)
+ // .setGridHeight(225,true)
   .navGrid('#pager',{edit:false,add:false,del:false,search:false})
   .navButtonAdd('#pager',{
     caption:"Add a new measurment", 
     buttonicon:"ui-icon-add", 
     onClickButton: function(){ 
       $("#list").jqGrid('editGridRow', "new", {
-        height:250,
-        reloadAfterSubmit:false
+        width:400,
+        height:400,
+        reloadAfterSubmit:true,
+        closeAfterAdd:true
       });
     }, 
     position:"last"
