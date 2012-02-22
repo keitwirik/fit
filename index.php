@@ -57,8 +57,7 @@ header {display:block;}
 
 div.ui-jqgrid-bdiv {height:250px;}
 
-#chartdiv {
-    height:250px;
+.chart {
     width:750px;
     margin:10px 0;
 }
@@ -68,6 +67,7 @@ nav.chart_nav ul li {
     display:inline;
     margin:0 15px;
     font-size:16px;
+    cursor:pointer;
 }
 
 .ui-jqgrid {
@@ -81,6 +81,11 @@ body #editmodlist {
     margin:0 auto!important;
     left:33%!important;
 }
+
+#plot2, #plot3, #plot4, #plot5, #plot6, #plot7, #plot8 {
+    display:none;
+}
+
 </style>
  
 <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
@@ -91,42 +96,14 @@ body #editmodlist {
 <script type="text/javascript" src="js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
 <script type="text/javascript" src="js/plugins/jqplot.dateAxisRenderer.min.js"></script>
 <script type="text/javascript" src="js/plugins/jqplot.trendline.min.js"></script>
+<script type="text/javascript" src="js/plugins/jqplot.highlighter.min.js"></script>
+<script type="text/javascript" src="js/plugins/jqplot.cursor.min.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function(){
 
   $.jqplot.config.enablePlugins = true;
-  $.jqplot.config.color = '#123123';
 
-  // jplot chart options
-  var chartoptions = {
-    title: 'Weight Graph',
-    dataRenderer: ajaxDataRenderer,
-    dataRendererOptions: {
-      unusedOptionalUrl: jsonurl
-    },
-    axesDefaults: {
-      labelRenderer: $.jqplot.CanvasAxisLabelRenderer
-    },
-    axes: {
-      xaxis: {
-        label: "Days",
-        pad: 0,
-        renderer: $.jqplot.DateAxisRenderer,
-        tickOptions: {
-            formatString: '%#m/%#d/%y'
-        }
-      },
-      yaxis: {
-        label: "Weight",
-        min:195,
-        max:206
-      }
-    },
-    series: [{
-      color:'orange'
-    }]
-    }
 
   var ajaxDataRenderer = function(url, plot, options) {
     var ret = null;
@@ -140,8 +117,103 @@ $(document).ready(function(){
     });
     return ret;
   };
-  var jsonurl = "./jsondata.php";
-  var plot2 = $.jqplot('chartdiv', [ajaxDataRenderer(jsonurl)], chartoptions);  
+  var jsonurl = "./jsontest.php";
+  s4 = ajaxDataRenderer(jsonurl);
+  console.log(s4);
+
+  // defaults
+  cat = new Object();
+  cat.data = s4.weight;
+  cat.label = s4.labels.weight;
+  cat.min_range = s4.ranges.min_weight;
+  cat.max_range = s4.ranges.max_weight;
+  console.log(cat);
+
+  bmi = new Object();
+  bmi.data = s4.bmi;
+  bmi.label = s4.labels.bmi;
+  bmi.min_range = s4.ranges.min_bmi;
+  bmi.max_range = s4.ranges.max_bmi;  
+  console.log(bmi);
+  // jplot chart options
+  var chartoptions = {
+    title: 'Weight Graph',
+    axesDefaults: {
+      labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+    },
+    axes: {
+      xaxis: {
+        label: "Days",
+        pad: 0,
+        renderer: $.jqplot.DateAxisRenderer,
+        tickOptions: {
+            formatString: '%#m/%#d/%y'
+        }
+      },
+      yaxis: {
+        label: cat.label,
+        min: (cat.min_range - 2),
+        max: (cat.max_range + 2)
+      }
+    },
+    highlighter: {
+      show: true,
+      sizeAdjust: 7.5
+    },
+    cursor: {
+      show: false
+    },
+    series: [{
+      color:'orange'
+    }]
+    }
+  var chartoptions_bmi = {
+    title: 'BMI Graph',
+    axesDefaults: {
+      labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+    },
+    axes: {
+      xaxis: {
+        label: "Days",
+        pad: 0,
+        renderer: $.jqplot.DateAxisRenderer,
+        tickOptions: {
+            formatString: '%#m/%#d/%y'
+        }
+      },
+      yaxis: {
+        label: bmi.label,
+        min: (bmi.min_range - .2),
+        max: (bmi.max_range + .2)
+      }
+    },
+    highlighter: {
+      show: true,
+      sizeAdjust: 7.5
+    },
+    cursor: {
+      show: false
+    },
+    series: [{
+      color:'orange'
+    }]
+    }
+  var plot1 = $.jqplot('plot1', [cat.data], chartoptions);  
+  var plot2 = $.jqplot('plot2', [bmi.data], chartoptions_bmi);  
+
+
+$('.nav_weight').click(function(){
+  $('.chart').hide();
+  $('#plot1').show();
+  plot1.replot();
+});
+$('.nav_bmi').click(function(){
+  $('.chart').hide();
+  $('#plot2').show();
+  plot2.replot();
+});
+
+// end of jqplot
 
   var formEditSize = 15;
   var gridColModel = [ 
@@ -231,23 +303,6 @@ $(document).ready(function(){
     });
   }
 
-
-  // FIXME generate array for the chart
-  //function weightchart() {
-  //    var data[0] = weight_arr;
-  //    console.log('weight_arr' + weight_arr);
-  //   var data = [[]];
-  //   data[0].push($('#list').jqGrid('getRowData',2));
-  //    data[0].push([1,205],[2,204],[3,200],[4,200],[5,201.5],[7,203.5]);
-  //    console.log(data);
-  //    for (var i=0; i<13; i+=0.5) {
-  //      data[0].push([i, Math.sin(i)]);
-  //    }
-  //  return data;
-  //}
-
-  weight_arr = new Array();
-
   $("#list").jqGrid({
     url:'example.php',
     datatype: 'xml',
@@ -274,10 +329,9 @@ $(document).ready(function(){
     autowidth: true,
     caption: '<?php echo $user->name; ?>\'s Progress',
     editurl: 'edit.php',
-    //loadComplete: [reloadEvents, $.jqplot('chartdiv', chartoptions).replot()]
+    //loadComplete: [reloadEvents, $.jqplot('plot1', chartoptions).replot()]
     loadComplete: [reloadEvents],
     beforeShowForm: function(formid) {
-       // "editmodlist"
        $("#editmodlist").css({
             'position': 'absolute',
             'top': '10px',
@@ -314,17 +368,24 @@ $(document).ready(function(){
     </header>   
     <nav class="chart_nav">
         <ul>
-            <li>weight</li>
-            <li>bmi</li>
-            <li>body fat</li>
-            <li>muscle</li>
-            <li>body age</li>
-            <li>visceral fat</li>
-            <li>waist</li>
-            <li>rm</li>
+            <li class="nav_weight">weight</li>
+            <li class="nav_bmi">bmi</li>
+            <li class="nav_body_fat">body fat</li>
+            <li class="nav_muscle">muscle</li>
+            <li class="nav_body_age">body age</li>
+            <li class="nav_viseral_fat">visceral fat</li>
+            <li class="nav_waist">waist</li>
+            <li class="nav_rm">rm</li>
         </ul> 
     </nav>
-    <div id="chartdiv"></div>
+    <div id="plot1" class="chart"></div>
+    <div id="plot2" class="chart"></div>
+    <div id="plot3" class="chart"></div>
+    <div id="plot4" class="chart"></div>
+    <div id="plot5" class="chart"></div>
+    <div id="plot6" class="chart"></div>
+    <div id="plot7" class="chart"></div>
+    <div id="plot8" class="chart"></div>
  
     <table id="list"><tr><td/></tr></table> 
     <div id="pager"></div>
