@@ -89,6 +89,7 @@ body #editmodlist {
 <script src="js/jquery.jqplot.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/plugins/jqplot.canvasTextRenderer.min.js"></script>
 <script type="text/javascript" src="js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+<script type="text/javascript" src="js/plugins/jqplot.dateAxisRenderer.min.js"></script>
 <script type="text/javascript" src="js/plugins/jqplot.trendline.min.js"></script>
 <script type="text/javascript">
 
@@ -96,24 +97,6 @@ $(document).ready(function(){
 
   $.jqplot.config.enablePlugins = true;
   $.jqplot.config.color = '#123123';
-
-  var ajaxDataRenderer = function(url, plot, options) {
-    var ret = null;
-    $.ajax({
-      // have to use synchronous here, else the function
-      // will return before the data is fetched
-      async: false,
-      url: url,
-      dataType:"json",
-      success: function(data) {
-        ret = data;
-      }
-    });
-    return ret;
-  };
- 
-  // The url for our json data
-  var jsonurl = "./jsondata.php";
 
   // jplot chart options
   var chartoptions = {
@@ -128,7 +111,11 @@ $(document).ready(function(){
     axes: {
       xaxis: {
         label: "Days",
-        pad: 0
+        pad: 0,
+        renderer: $.jqplot.DateAxisRenderer,
+        tickOptions: {
+            formatString: '%#m/%#d/%y'
+        }
       },
       yaxis: {
         label: "Weight",
@@ -140,7 +127,21 @@ $(document).ready(function(){
       color:'orange'
     }]
     }
-    $.jqplot('chartdiv', jsonurl, chartoptions);  
+
+  var ajaxDataRenderer = function(url, plot, options) {
+    var ret = null;
+    $.ajax({
+      async: false,
+      url: url,
+      dataType:"json",
+      success: function(data) {
+        ret = data;
+      }
+    });
+    return ret;
+  };
+  var jsonurl = "./jsondata.php";
+  var plot2 = $.jqplot('chartdiv', [ajaxDataRenderer(jsonurl)], chartoptions);  
 
   var formEditSize = 15;
   var gridColModel = [ 
