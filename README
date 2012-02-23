@@ -1,0 +1,9 @@
+The app should work in any LAMP setup.
+
+The SQL necessary to run the app is available in the database directory.
+
+02-22-2012-setup-db.sql is needed to setup the initial schema of the app. any additional files (if any) need to be run in cronological order to keep up with the project.
+
+02-22-2012-dummy-startup-data.sql is there just to provide enough data to see the thing work, it's not necessary and may be out of date.
+
+There are a lot of files in js/ that may not be needed but they are included because I'm invoking more and more of them as the project goes on.
