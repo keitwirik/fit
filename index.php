@@ -98,6 +98,7 @@ body #editmodlist {
 <script type="text/javascript" src="js/plugins/jqplot.trendline.min.js"></script>
 <script type="text/javascript" src="js/plugins/jqplot.highlighter.min.js"></script>
 <script type="text/javascript" src="js/plugins/jqplot.cursor.min.js"></script>
+<script type="text/javascript" src="js/plugins/jqplot.canvasOverlay.min.js"></script>
 <script type="text/javascript">
 
 $(document).ready(function(){
@@ -183,9 +184,20 @@ $(document).ready(function(){
       },
       yaxis: {
         label: bmi.label,
-        min: (bmi.min_range - .2),
+        min: (bmi.min_range - .4),
         max: (bmi.max_range + .2)
       }
+    },
+    canvasOverlay: {
+      name: 'max normal',
+      show: true,
+      objects: [{
+        horizontalLine: {
+          y: 25,
+          lineWidth: 1,
+          color: 'rgb(250, 128, 114)',
+        }
+      }]
     },
     highlighter: {
       show: true,
