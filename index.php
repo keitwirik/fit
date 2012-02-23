@@ -123,14 +123,14 @@ $(document).ready(function(){
 
   // defaults
   cat = new Object();
-  cat.data = s4.weight;
+  cat.data = s4.weight.data;
   cat.label = s4.labels.weight;
   cat.min_range = s4.ranges.min_weight;
   cat.max_range = s4.ranges.max_weight;
   console.log(cat);
 
   bmi = new Object();
-  bmi.data = s4.bmi;
+  bmi.data = s4.bmi.data;
   bmi.label = s4.labels.bmi;
   bmi.min_range = s4.ranges.min_bmi;
   bmi.max_range = s4.ranges.max_bmi;  
