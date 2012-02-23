@@ -94,6 +94,7 @@ body #editmodlist {
 <script src="js/jquery.jqplot.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/plugins/jqplot.canvasTextRenderer.min.js"></script>
 <script type="text/javascript" src="js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+<script type="text/javascript" src="js/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
 <script type="text/javascript" src="js/plugins/jqplot.dateAxisRenderer.min.js"></script>
 <script type="text/javascript" src="js/plugins/jqplot.trendline.min.js"></script>
 <script type="text/javascript" src="js/plugins/jqplot.highlighter.min.js"></script>
@@ -140,16 +141,14 @@ $(document).ready(function(){
   var chartoptions = {
     title: 'Weight Graph',
     axesDefaults: {
-      labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+      labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+      tickRenderer: $.jqplot.CanvasAxisTickRenderer
     },
     axes: {
       xaxis: {
         label: "Days",
         pad: 0,
         renderer: $.jqplot.DateAxisRenderer,
-        tickOptions: {
-            formatString: '%#m/%#d/%y'
-        }
       },
       yaxis: {
         label: cat.label,
@@ -171,16 +170,14 @@ $(document).ready(function(){
   var chartoptions_bmi = {
     title: 'BMI Graph',
     axesDefaults: {
-      labelRenderer: $.jqplot.CanvasAxisLabelRenderer
+      labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+      tickRenderer: $.jqplot.CanvasAxisTickRenderer
     },
     axes: {
       xaxis: {
         label: "Days",
         pad: 0,
         renderer: $.jqplot.DateAxisRenderer,
-        tickOptions: {
-            formatString: '%#m/%#d/%y'
-        }
       },
       yaxis: {
         label: bmi.label,
