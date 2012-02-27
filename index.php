@@ -329,8 +329,8 @@ $('.nav_bmi').click(function(){
     ],
     colModel : gridColModel,
     pager: '#pager',
-    rowNum:20,
-    rowList:[10,20,30],
+    rowNum:90,
+    rowList:[20,30,50],
     sortname: 'timestamp',
     sortorder: 'asc',
     viewrecords: true,
@@ -362,8 +362,15 @@ $('.nav_bmi').click(function(){
       });
     }, 
     position:"last"
-   }) 
+   })
+
 }); // end of big long function 
+
+//not the best way to scroll to the bottom of the grid
+$(window).bind("load", function(){
+    $(".ui-jqgrid-bdiv").animate({ scrollTop: 1000 }, 9999);
+});
+
 </script>
 
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="/js/excanvas.js"></script><![endif]-->
