@@ -137,6 +137,14 @@ $(document).ready(function(){
   bmi.min_range = s4.ranges.min_bmi;
   bmi.max_range = s4.ranges.max_bmi;  
   console.log(bmi);
+
+  body_fat = new Object();
+  body_fat.data = s4.body_fat.data;
+  body_fat.label = s4.labels.body_fat;
+  body_fat.min_range = s4.ranges.min_body_fat;
+  body_fat.max_range = s4.ranges.max_body_fat;  
+  console.log(body_fat);
+
   // jplot chart options
   var chartoptions = {
     title: 'Weight Graph',
@@ -207,8 +215,50 @@ $(document).ready(function(){
       color:'orange'
     }]
     }
+  var chartoptions_body_fat = {
+    title: 'Body Fat Graph',
+    axesDefaults: {
+      labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+      tickRenderer: $.jqplot.CanvasAxisTickRenderer
+    },
+    axes: {
+      xaxis: {
+        label: "Days",
+        pad: 0,
+        renderer: $.jqplot.DateAxisRenderer,
+      },
+      yaxis: {
+        label: body_fat.label,
+        min: (body_fat.min_range - .4),
+        max: (body_fat.max_range + .2)
+      }
+    },
+    canvasOverlay: {
+      name: 'max normal',
+      show: true,
+      objects: [{
+        horizontalLine: {
+          y: 28,
+          lineWidth: 1,
+          color: 'rgb(250, 128, 114)',
+        }
+      }]
+    },
+    highlighter: {
+      show: true,
+      sizeAdjust: 7.5
+    },
+    cursor: {
+      show: false
+    },
+    series: [{
+      color:'orange'
+    }]
+    }
+
   var plot1 = $.jqplot('plot1', [cat.data], chartoptions);  
   var plot2 = $.jqplot('plot2', [bmi.data], chartoptions_bmi);  
+  var plot3 = $.jqplot('plot3', [body_fat.data], chartoptions_body_fat);  
 
 
 $('.nav_weight').click(function(){
@@ -220,6 +270,11 @@ $('.nav_bmi').click(function(){
   $('.chart').hide();
   $('#plot2').show();
   plot2.replot();
+});
+$('.nav_body_fat').click(function(){
+  $('.chart').hide();
+  $('#plot3').show();
+  plot3.replot();
 });
 
 // end of jqplot
