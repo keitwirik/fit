@@ -68,6 +68,8 @@ nav.chart_nav ul li {
     margin:0 15px;
     font-size:16px;
     cursor:pointer;
+    text-decoration:underline;
+    color:blue;
 }
 
 .ui-jqgrid {
@@ -84,6 +86,12 @@ body #editmodlist {
 
 #plot2, #plot3, #plot4, #plot5, #plot6, #plot7, #plot8 {
     display:none;
+}
+
+nav.chart_nav ul li.nav_active {
+    color:black; 
+    cursor:default;
+    text-decoration:none;
 }
 
 </style>
@@ -105,7 +113,6 @@ body #editmodlist {
 $(document).ready(function(){
 
   $.jqplot.config.enablePlugins = true;
-
 
   var ajaxDataRenderer = function(url, plot, options) {
     var ret = null;
@@ -145,7 +152,42 @@ $(document).ready(function(){
   body_fat.max_range = s4.ranges.max_body_fat;  
   console.log(body_fat);
 
-  // jplot chart options
+  muscle = new Object();
+  muscle.data = s4.muscle.data;
+  muscle.label = s4.labels.muscle;
+  muscle.min_range = s4.ranges.min_muscle;
+  muscle.max_range = s4.ranges.max_muscle;  
+  console.log(muscle);
+  
+  body_age = new Object();
+  body_age.data = s4.body_age.data;
+  body_age.label = s4.labels.body_age;
+  body_age.min_range = s4.ranges.min_body_age;
+  body_age.max_range = s4.ranges.max_body_age;  
+  console.log(body_age);
+  
+  visceral_fat = new Object();
+  visceral_fat.data = s4.visceral_fat.data;
+  visceral_fat.label = s4.labels.visceral_fat;
+  visceral_fat.min_range = s4.ranges.min_visceral_fat;
+  visceral_fat.max_range = s4.ranges.max_visceral_fat;  
+  console.log(visceral_fat);
+
+  waist = new Object();
+  waist.data = s4.waist.data;
+  waist.label = s4.labels.waist;
+  waist.min_range = s4.ranges.min_waist;
+  waist.max_range = s4.ranges.max_waist;  
+  console.log(waist);
+
+  rm = new Object();
+  rm.data = s4.rm.data;
+  rm.label = s4.labels.rm;
+  rm.min_range = s4.ranges.min_rm;
+  rm.max_range = s4.ranges.max_rm;  
+  console.log(rm);
+
+// jplot chart options
   var chartoptions = {
     title: 'Weight Graph',
     axesDefaults: {
@@ -256,10 +298,218 @@ $(document).ready(function(){
     }]
     }
 
+  var chartoptions_muscle = {
+    title: 'Muscle Graph',
+    axesDefaults: {
+      labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+      tickRenderer: $.jqplot.CanvasAxisTickRenderer
+    },
+    axes: {
+      xaxis: {
+        label: "Days",
+        pad: 0,
+        renderer: $.jqplot.DateAxisRenderer,
+      },
+      yaxis: {
+        label: muscle.label,
+        min: (muscle.min_range - .4),
+        max: (muscle.max_range + .2)
+      }
+    },
+    canvasOverlay: {
+      name: 'max normal',
+      show: true,
+      objects: [{
+        horizontalLine: {
+          y: 33.1,
+          lineWidth: 1,
+          color: 'rgb(250, 128, 114)',
+        }
+      }]
+    },
+    highlighter: {
+      show: true,
+      sizeAdjust: 7.5
+    },
+    cursor: {
+      show: false
+    },
+    series: [{
+      color:'orange'
+    }]
+    }
+
+
+  var chartoptions_body_age = {
+    title: 'Body Age Graph',
+    axesDefaults: {
+      labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+      tickRenderer: $.jqplot.CanvasAxisTickRenderer
+    },
+    axes: {
+      xaxis: {
+        label: "Days",
+        pad: 0,
+        renderer: $.jqplot.DateAxisRenderer,
+      },
+      yaxis: {
+        label: body_age.label,
+        min: (body_age.min_range - .4),
+        max: (body_age.max_range + .2)
+      }
+    },
+    canvasOverlay: {
+      name: 'max normal',
+      show: true,
+      objects: [{
+        horizontalLine: {
+          y: 42,
+          lineWidth: 1,
+          color: 'rgb(250, 128, 114)',
+        }
+      }]
+    },
+    highlighter: {
+      show: true,
+      sizeAdjust: 7.5
+    },
+    cursor: {
+      show: false
+    },
+    series: [{
+      color:'orange'
+    }]
+  }
+
+  var chartoptions_visceral_fat = {
+    title: 'Viceral Fat Graph',
+    axesDefaults: {
+      labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+      tickRenderer: $.jqplot.CanvasAxisTickRenderer
+    },
+    axes: {
+      xaxis: {
+        label: "Days",
+        pad: 0,
+        renderer: $.jqplot.DateAxisRenderer,
+      },
+      yaxis: {
+        label: visceral_fat.label,
+        min: (visceral_fat.min_range - .4),
+        max: (visceral_fat.max_range + .2)
+      }
+    },
+    canvasOverlay: {
+      name: 'max normal',
+      show: true,
+      objects: [{
+        horizontalLine: {
+          y: 9,
+          lineWidth: 1,
+          color: 'rgb(250, 128, 114)',
+        }
+      }]
+    },
+    highlighter: {
+      show: true,
+      sizeAdjust: 7.5
+    },
+    cursor: {
+      show: false
+    },
+    series: [{
+      color:'orange'
+    }]
+  }
+
+  var chartoptions_waist = {
+    title: 'Waist Graph',
+    axesDefaults: {
+      labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+      tickRenderer: $.jqplot.CanvasAxisTickRenderer
+    },
+    axes: {
+      xaxis: {
+        label: "Days",
+        pad: 0,
+        renderer: $.jqplot.DateAxisRenderer,
+      },
+      yaxis: {
+        label: waist.label,
+        min: (waist.min_range - .4),
+        max: (waist.max_range + .2)
+      }
+    },
+    canvasOverlay: {
+      name: 'max normal',
+      show: true,
+      objects: [{
+        horizontalLine: {
+          y: 40,
+          lineWidth: 1,
+          color: 'rgb(250, 128, 114)',
+        }
+      }]
+    },
+    highlighter: {
+      show: true,
+      sizeAdjust: 7.5
+    },
+    cursor: {
+      show: false
+    },
+    series: [{
+      color:'orange'
+    }]
+  }
+
+  var chartoptions_rm = {
+    title: 'Rest Metabolism Graph',
+    axesDefaults: {
+      labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+      tickRenderer: $.jqplot.CanvasAxisTickRenderer
+    },
+    axes: {
+      xaxis: {
+        label: "Days",
+        pad: 0,
+        renderer: $.jqplot.DateAxisRenderer,
+      },
+      yaxis: {
+        label: rm.label,
+        min: (rm.min_range - .4),
+        max: (rm.max_range + .2)
+      }
+    },
+    canvasOverlay: {
+      name: 'max normal',
+      show: true,
+    },
+    highlighter: {
+      show: true,
+      sizeAdjust: 7.5
+    },
+    cursor: {
+      show: false
+    },
+    series: [{
+      color:'orange'
+    }]
+  }
+
   var plot1 = $.jqplot('plot1', [cat.data], chartoptions);  
   var plot2 = $.jqplot('plot2', [bmi.data], chartoptions_bmi);  
   var plot3 = $.jqplot('plot3', [body_fat.data], chartoptions_body_fat);  
+  var plot4 = $.jqplot('plot4', [muscle.data], chartoptions_muscle);  
+  var plot5 = $.jqplot('plot5', [body_age.data], chartoptions_body_age);  
+  var plot6 = $.jqplot('plot6', [visceral_fat.data], chartoptions_visceral_fat);  
+  var plot7 = $.jqplot('plot7', [waist.data], chartoptions_waist);  
+  var plot8 = $.jqplot('plot8', [rm.data], chartoptions_rm);  
 
+$('.chart_nav ul li').click(function(){
+  $('.chart_nav ul li').removeClass('nav_active');
+  $(this).addClass('nav_active');  
+});
 
 $('.nav_weight').click(function(){
   $('.chart').hide();
@@ -275,6 +525,31 @@ $('.nav_body_fat').click(function(){
   $('.chart').hide();
   $('#plot3').show();
   plot3.replot();
+});
+$('.nav_muscle').click(function(){
+  $('.chart').hide();
+  $('#plot4').show();
+  plot4.replot();
+});
+$('.nav_body_age').click(function(){
+  $('.chart').hide();
+  $('#plot5').show();
+  plot5.replot();
+});
+$('.nav_visceral_fat').click(function(){
+  $('.chart').hide();
+  $('#plot6').show();
+  plot6.replot();
+});
+$('.nav_waist').click(function(){
+  $('.chart').hide();
+  $('#plot7').show();
+  plot7.replot();
+});
+$('.nav_rm').click(function(){
+  $('.chart').hide();
+  $('#plot8').show();
+  plot8.replot();
 });
 
 // end of jqplot
@@ -439,12 +714,12 @@ $(window).bind("load", function(){
     </header>   
     <nav class="chart_nav">
         <ul>
-            <li class="nav_weight">weight</li>
+            <li class="nav_weight nav_active">weight</li>
             <li class="nav_bmi">bmi</li>
             <li class="nav_body_fat">body fat</li>
             <li class="nav_muscle">muscle</li>
             <li class="nav_body_age">body age</li>
-            <li class="nav_viseral_fat">visceral fat</li>
+            <li class="nav_visceral_fat">visceral fat</li>
             <li class="nav_waist">waist</li>
             <li class="nav_rm">rm</li>
         </ul> 
