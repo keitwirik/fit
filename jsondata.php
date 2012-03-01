@@ -52,41 +52,49 @@ $s = array();
 
 while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
     $date = short_time($row['timestamp']);
-    $s['weight'][] = array(
+    $s['weight']['data'][] = array(
         $date,
         floatval($row['weight'])
     );
-    $s['bmi'][] = array(
+    $s['bmi']['data'][] = array(
         $date,
         floatval($row['bmi'])
     );
-    $s['body_fat'][] = array(
+    $s['body_fat']['data'][] = array(
         $date,
         floatval($row['body_fat'])
     );
-    $s['muscle'][] = array(
+    $s['muscle']['data'][] = array(
         $date,
         floatval($row['muscle'])
     );
-    $s['body_age'][] = array(
+    $s['body_age']['data'][] = array(
         $date,
         floatval($row['body_age'])
     );
-    $s['visceral_fat'][] = array(
+    $s['visceral_fat']['data'][] = array(
         $date,
-        floatval($row['visceral_fat'])
+        intval($row['visceral_fat'])
     );
-    $s['rm'][] = array(
+    $s['rm']['data'][] = array(
         $date,
         floatval($row['rm'])
     );
-    $s['waist'][] = array(
-        $date,
-        floatval($row['waist'])
+    $s['waist']['data'][] = array(
+            $date,
+            floatval($row['waist'])
     );
 }
 
+function miss_date($var){
+    if($var[1] != 0){
+        return $var;
+    }
+}
+$s['waist']['data'] = array_values(array_filter($s['waist']['data'], "miss_date"));
+$s['weight']['chartoptions']['axes']['yaxis']['label'] = $labels['weight'];
 $s['ranges'] = $ranges_arr;
 $s['labels'] = $labels;
 echo json_encode($s);
+//print_r($s);
 ?>

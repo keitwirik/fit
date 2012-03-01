@@ -126,7 +126,7 @@ $(document).ready(function(){
     });
     return ret;
   };
-  var jsonurl = "./jsontest.php";
+  var jsonurl = "./jsondata.php";
   s4 = ajaxDataRenderer(jsonurl);
   console.log(s4);
 
@@ -395,8 +395,8 @@ $(document).ready(function(){
       },
       yaxis: {
         label: visceral_fat.label,
-        min: (visceral_fat.min_range - .4),
-        max: (visceral_fat.max_range + .2)
+        min: (visceral_fat.min_range - 2),
+        max: (visceral_fat.max_range + 2)
       }
     },
     canvasOverlay: {
@@ -404,7 +404,7 @@ $(document).ready(function(){
       show: true,
       objects: [{
         horizontalLine: {
-          y: 9,
+          y: 9.9,
           lineWidth: 1,
           color: 'rgb(250, 128, 114)',
         }
