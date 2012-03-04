@@ -22,9 +22,6 @@ $user= get_user($user_id);
 ?>
 
 
-
-
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -94,6 +91,13 @@ nav.chart_nav ul li.nav_active {
     text-decoration:none;
 }
 
+.jqplot-highlighter-tooltip {
+    font-size:15px;
+    background:#fff;
+    border:2px solid #7473F7;
+    border-radius:8px;
+    padding:5px;
+}
 </style>
  
 <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
@@ -113,7 +117,7 @@ nav.chart_nav ul li.nav_active {
 $(document).ready(function(){
 
   $.jqplot.config.enablePlugins = true;
-
+  
   var ajaxDataRenderer = function(url, plot, options) {
     var ret = null;
     $.ajax({
@@ -131,12 +135,13 @@ $(document).ready(function(){
   console.log(s4);
 
   // defaults
-  cat = new Object();
-  cat.data = s4.weight.data;
-  cat.label = s4.labels.weight;
-  cat.min_range = s4.ranges.min_weight;
-  cat.max_range = s4.ranges.max_weight;
-  console.log(cat);
+  weight = new Object();
+  weight.data = s4.weight.data;
+  weight.chartoptions = s4.weight.chartoptions;
+  weight.label = s4.labels.weight;
+  weight.min_range = s4.ranges.min_weight;
+  weight.max_range = s4.ranges.max_weight;
+  console.log(weight);
 
   bmi = new Object();
   bmi.data = s4.bmi.data;
@@ -188,7 +193,8 @@ $(document).ready(function(){
   console.log(rm);
 
 // jplot chart options
-  var chartoptions = {
+      
+  var chartoptions_weight = {
     title: 'Weight Graph',
     axesDefaults: {
       labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
@@ -201,9 +207,9 @@ $(document).ready(function(){
         renderer: $.jqplot.DateAxisRenderer,
       },
       yaxis: {
-        label: cat.label,
-        min: (cat.min_range - 2),
-        max: (cat.max_range + 2)
+        label: weight.label,
+        min: (weight.min_range - 2),
+        max: (weight.max_range + 2)
       }
     },
     highlighter: {
@@ -216,7 +222,7 @@ $(document).ready(function(){
     series: [{
       color:'orange'
     }]
-    }
+  }
   var chartoptions_bmi = {
     title: 'BMI Graph',
     axesDefaults: {
@@ -256,7 +262,7 @@ $(document).ready(function(){
     series: [{
       color:'orange'
     }]
-    }
+  }
   var chartoptions_body_fat = {
     title: 'Body Fat Graph',
     axesDefaults: {
@@ -276,13 +282,21 @@ $(document).ready(function(){
       }
     },
     canvasOverlay: {
-      name: 'max normal',
+      name: 'max overweight',
       show: true,
-      objects: [{
+      objects: [
+      {
         horizontalLine: {
-          y: 28,
+          y: 27.9,
           lineWidth: 1,
-          color: 'rgb(250, 128, 114)',
+          color: 'rgb(250, 128, 114)'
+        }
+      },
+      {  
+        horizontalLine: {
+          y: 21.9,
+          lineWidth: 1,
+          color: 'rgb(250, 128, 114)'
         }
       }]
     },
@@ -296,8 +310,7 @@ $(document).ready(function(){
     series: [{
       color:'orange'
     }]
-    }
-
+  }
   var chartoptions_muscle = {
     title: 'Muscle Graph',
     axesDefaults: {
@@ -337,9 +350,7 @@ $(document).ready(function(){
     series: [{
       color:'orange'
     }]
-    }
-
-
+  }
   var chartoptions_body_age = {
     title: 'Body Age Graph',
     axesDefaults: {
@@ -380,7 +391,6 @@ $(document).ready(function(){
       color:'orange'
     }]
   }
-
   var chartoptions_visceral_fat = {
     title: 'Viceral Fat Graph',
     axesDefaults: {
@@ -421,7 +431,6 @@ $(document).ready(function(){
       color:'orange'
     }]
   }
-
   var chartoptions_waist = {
     title: 'Waist Graph',
     axesDefaults: {
@@ -462,7 +471,6 @@ $(document).ready(function(){
       color:'orange'
     }]
   }
-
   var chartoptions_rm = {
     title: 'Rest Metabolism Graph',
     axesDefaults: {
@@ -477,8 +485,8 @@ $(document).ready(function(){
       },
       yaxis: {
         label: rm.label,
-        min: (rm.min_range - .4),
-        max: (rm.max_range + .2)
+        min: (rm.min_range - 10),
+        max: (rm.max_range + 10)
       }
     },
     canvasOverlay: {
@@ -497,7 +505,8 @@ $(document).ready(function(){
     }]
   }
 
-  var plot1 = $.jqplot('plot1', [cat.data], chartoptions);  
+  var plot1 = $.jqplot('plot1', [weight.data], chartoptions_weight);  
+//  var plot1 = $.jqplot('plot1', [weight.data], weight.chartoptions);  
   var plot2 = $.jqplot('plot2', [bmi.data], chartoptions_bmi);  
   var plot3 = $.jqplot('plot3', [body_fat.data], chartoptions_body_fat);  
   var plot4 = $.jqplot('plot4', [muscle.data], chartoptions_muscle);  
@@ -554,6 +563,8 @@ $('.nav_rm').click(function(){
 
 // end of jqplot
 
+
+// jqgrid settings
   var formEditSize = 15;
   var gridColModel = [ 
     {name:'timestamp', index:'timestamp', width:135, 
@@ -637,13 +648,13 @@ $('.nav_rm').click(function(){
   // update grid for different users
   function reloadEvents(){
     $('h1.user').click(function(){
-      $('#list').setGridParam({url:'example.php'}); 
+      $('#list').setGridParam({url:'generate_grid.php'}); 
       $('#list').trigger("reloadGrid");  
     });
   }
 
   $("#list").jqGrid({
-    url:'example.php',
+    url:'generate_grid.php',
     datatype: 'xml',
     mtype: 'GET',
     colNames:[
@@ -696,15 +707,14 @@ $('.nav_rm').click(function(){
 
 }); // end of big long function 
 
-//not the best way to scroll to the bottom of the grid
+// post load events
+//not the best way to scroll to the bottom of the grid 
 $(window).bind("load", function(){
     $(".ui-jqgrid-bdiv").animate({ scrollTop: 1000 }, 9999);
 });
 
 </script>
-
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="/js/excanvas.js"></script><![endif]-->
-
 </head>
 <body>
 <div id="envelope">
