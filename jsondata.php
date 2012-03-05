@@ -1,11 +1,15 @@
 <?php
-include 'dbo.php';
 
+include 'dbo.php';
+//include 'mappings.php';
+
+//convert timestamp to short_date
 function short_time($timestamp){
     $short_date = date("j-M-Y", strtotime($timestamp));
     return $short_date;
 }
 
+//skips days without records
 function miss_date($var){
     if($var[1] != 0){
         return $var;
@@ -15,53 +19,69 @@ function miss_date($var){
 //FIXME hardcoding the user id
 $user_id = 1;
 
-// default chart options
-$chartopts = new stdClass;
+// start chart class
+class chart  {
+    private $titles = array();
+    private $labels = array();
+    function __construct($chart_name) {
+        global $DBH;
+        global $user_id;
+        global $ranges; 
+        $this->chartoptions = $chart_name;
+        $this->titles = array(
+            'weight' => 'Weight Graph',
+            'bmi' => 'BMI Graph',
+            'body_fat' => 'Body Fat Percentage',
+            'muscle' => 'Muscle Percentage"',
+            'body_age' => 'Body Age Graph',
+            'visceral_fat' => 'Visceral Fat Graph',
+            'waist' => 'Waist (inches) Graph',
+            'rm' => 'Resting Metabolism Graph'
+        );
+        $this->labels = array(
+            'weight' => 'Weight',
+            'bmi' => 'BMI',
+            'body_fat' => 'Body Fat %',
+            'muscle' => 'Muscle %"',
+            'body_age' => 'Body Age',
+            'visceral_fat' => 'Visceral Fat',
+            'waist' => 'Waist (inches)',
+            'rm' => 'Resting Metabolism'
+        );
+        $this->title = $this->titles[$this->chartoptions];
+        $this->label = $this->labels[$this->chartoptions];
+        $this->axesDefaults->labelRenderer = 'calr';
+        $this->axesDefaults->tickRenderer = 'catr';
+        $this->axes->xaxis->label = 'Days';
+        $this->axes->xaxis->pad = '0';
+        $this->axes->xaxis->renderer = 'dar';
+        $this->axes->yaxis->label = 'yaxis';
+//        $this->axes->yaxis->min = $ranges->min_weight;
+//        $this->axes->yaxis->max = $ranges->max_weight;
+        $this->highlighter->show = 'true';
+        $this->highlighter->sizeAdjust = '7.5';
+        $this->cursor->show = 'false';
+        $this->series->color = 'orange';
 
-$chartopts->title = array(
-        'weight' => 'Weight Graph',
-        'bmi' => 'BMI Graph',
-        'body_fat' => 'Body Fat Percentage',
-        'muscle' => 'Muscle Percentage"',
-        'body_age' => 'Body Age Graph',
-        'visceral_fat' => 'Visceral Fat Graph',
-        'waist' => 'Waist (inches) Graph',
-        'rm' => 'Resting Metabolism Graph'
-    );    
-$chartopts->label = array(
-        'weight' => 'Weight',
-        'bmi' => 'BMI',
-        'body_fat' => 'Body Fat %',
-        'muscle' => 'Muscle %"',
-        'body_age' => 'Body Age',
-        'visceral_fat' => 'Visceral Fat',
-        'waist' => 'Waist (inches)',
-        'rm' => 'Resting Metabolism'
-    );
+        $STH = $DBH->query("SELECT id, timestamp, weight, bmi, 
+                            body_fat, muscle, body_age,
+                            visceral_fat, rm, waist
+                            FROM records
+                            WHERE user = '$user_id' 
+                            ORDER BY timestamp"
+                           );
 
-$chartopts->axesDefaults->labelRenderer = 
-        '$.jqplot.CanvasAxisLabelRenderer';
-$chartopts->axesDefaults->tickRenderer = 
-        '$.jqplot.CanvasAxisTickRenderer';
+        $STH->setFetchMode(PDO::FETCH_OBJ);
 
-$chartopts->axes->xaxis->label = 'Days';
-$chartopts->axes->xaxis->min = '';
-$chartopts->axes->xaxis->max = '';
-$chartopts->axes->yaxis->label = 'Days';
-$chartopts->axes->yaxis->min = '';
-$chartopts->axes->yaxis->max = '';
-$chartopts->highlighter->show = 'true';
-$chartopts->highlighter->sizeAdjust = '7.5';
-$chartopts->cursor->show = 'false';
-$chartopts->series = array(
-        'color' => 'orange'
-);
-
-
-
-
-
-// query for graph ranges
+        while($row = $STH->fetch()) {
+            $date = short_time($row->timestamp);
+            $this->data[] = array(
+                $date,
+                floatval($row->$chart_name)
+            );
+        }
+    }
+}
 
 $STH = $DBH->query("SELECT
          MIN(weight) AS min_weight, MAX(weight) AS max_weight,
@@ -79,77 +99,22 @@ $STH = $DBH->query("SELECT
 $STH->setFetchMode(PDO::FETCH_OBJ);
 
 $ranges = $STH->fetch();
-
-$ranges_arr = array();
-foreach($ranges as $k => $v){ 
-    $ranges_arr[$k] = floatval($v);
-}
-
-
 $s = new stdClass;
+$s->weight = new chart('weight');
+$s->bmi =  new chart('bmi');
+$s->body_fat = new chart('body_fat');
+$s->muscle = new chart('muscle');
+$s->body_age = new chart('body_age');
+$s->visceral_fat = new chart('visceral_fat');
+$s->waist = new chart('waist');
+$s->rm = new chart('rm');
 
-// apply default chartopts to s obj
-$s->weight->chartoptions = $chartopts;
-$s->bmi->chartoptions = $chartopts;
-$s->body_fat->chartoptions = $chartopts;
-$s->muscle->chartoptions = $chartopts;
-$s->body_age->chartoptions = $chartopts;
-$s->visceral_fat->chartoptions = $chartopts;
-$s->rm->chartoptions = $chartopts;
-$s->waist->chartoptions = $chartopts;
-
-$STH = $DBH->query("SELECT id, timestamp, weight, bmi, 
-                    body_fat, muscle, body_age,
-                    visceral_fat, rm, waist
-                    FROM records
-                    WHERE user = '$user_id' 
-                    ORDER BY timestamp"
-                   );
-
-$STH->setFetchMode(PDO::FETCH_OBJ);
-
-while($row = $STH->fetch()) {
-    $date = short_time($row->timestamp);
-    $s->weight->data[] = array(
-        $date,
-        floatval($row->weight)
-    );
-    $s->bmi->data[] = array(
-        $date,
-        floatval($row->bmi)
-    );
-    $s->body_fat->data[] = array(
-        $date,
-        floatval($row->body_fat)
-    );
-    $s->muscle->data[] = array(
-        $date,
-        floatval($row->muscle)
-    );
-    $s->body_age->data[] = array(
-        $date,
-        floatval($row->body_age)
-    );
-    $s->visceral_fat->data[] = array(
-        $date,
-        intval($row->visceral_fat)
-    );
-    $s->rm->data[] = array(
-        $date,
-        floatval($row->rm)
-    );
-    $s->waist->data[] = array(
-            $date,
-            floatval($row->waist)
-    );
-}
 
 // correct for days with missing entries, waist only
 $s->waist->data = array_values(array_filter($s->waist->data, "miss_date"));
 
-//$s->weight->chartoptions->axes->yaxis->label = $labels->weight;
-$s->ranges = $ranges_arr;
-$s->labels = $chartopts->label;
+$s->ranges = $ranges;
+
 //print_r($s);
 echo json_encode($s);
 ?>
