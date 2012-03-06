@@ -59,17 +59,31 @@ $(document).ready(function(){
   bmi.series = new Array(
     {'color': bmi.series.color}
   );
-/*
   bmi.canvasOverlay.name = 'max normal';
-  bmi.canvasOverlay.show = true;
-  bmi.canvasOverlay.objects = [{
-     horizontalLine: {
-       y: 25,
-       lineWidth: 1,
-       color: 'rgb(250, 128, 114)',
-     }
-  }];
-*/    
+  bmi.canvasOverlay.show = s4.overlay_bmi.show;
+  bmi.canvasOverlay.objects = [
+    {
+         horizontalLine: {
+           y: s4.overlay_bmi.u3,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    },
+    {
+         horizontalLine: {
+           y: s4.overlay_bmi.n3,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    },
+    {
+         horizontalLine: {
+           y: s4.overlay_bmi.o3,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    }
+  ];
   (bmi.cursor.show == 'true') ?
     bmi.cursor.show = true :
     bmi.cursor.show = false;
@@ -105,6 +119,30 @@ $(document).ready(function(){
     body_fat.highlighter.show = false;
   body_fat.highlighter.sizeAdjust =
     parseFloat(body_fat.highlighter.sizeAdjust);
+  body_fat.canvasOverlay.show = s4.overlay_body_fat.show;
+  body_fat.canvasOverlay.objects = [
+      {
+        horizontalLine: {
+          y: s4.overlay_body_fat.u,
+          lineWidth: 1,
+          color: 'rgb(250, 128, 114)'
+        }
+      },
+      {
+        horizontalLine: {
+          y: s4.overlay_body_fat.n,
+          lineWidth: 1,
+          color: 'rgb(250, 128, 114)'
+        }
+      },
+      {  
+        horizontalLine: {
+          y: s4.overlay_body_fat.o,
+          lineWidth: 1,
+          color: 'rgb(250, 128, 114)'
+        }
+      }
+  ];    
   if(body_fat.axesDefaults.labelRenderer == 'calr'){
     body_fat.axesDefaults.labelRenderer = calr;
   }
@@ -132,6 +170,33 @@ $(document).ready(function(){
     muscle.highlighter.show = false;
   muscle.highlighter.sizeAdjust =
     parseFloat(muscle.highlighter.sizeAdjust);
+  if(s4.overlay_muscle){
+  muscle.canvasOverlay.name = 'max normal';
+  muscle.canvasOverlay.show = s4.overlay_muscle.show;
+  muscle.canvasOverlay.objects = [
+    {
+         horizontalLine: {
+           y: s4.overlay_muscle.u,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    },
+    {
+         horizontalLine: {
+           y: s4.overlay_muscle.n,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    },
+    {
+         horizontalLine: {
+           y: s4.overlay_muscle.o,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    }
+  ];
+  }
   if(muscle.axesDefaults.labelRenderer == 'calr'){
     muscle.axesDefaults.labelRenderer = calr;
   }
@@ -159,6 +224,33 @@ $(document).ready(function(){
     body_age.highlighter.show = false;
   body_age.highlighter.sizeAdjust =
     parseFloat(body_age.highlighter.sizeAdjust);
+  if(s4.overlay_body_age){
+  body_age.canvasOverlay.name = 'max normal';
+  body_age.canvasOverlay.show = s4.overlay_body_age.show;
+  body_age.canvasOverlay.objects = [
+    {
+         horizontalLine: {
+           y: s4.overlay_body_age.u3,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    },
+    {
+         horizontalLine: {
+           y: s4.overlay_body_age.n3,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    },
+    {
+         horizontalLine: {
+           y: s4.overlay_body_age.o3,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    }
+  ];
+  }
   if(body_age.axesDefaults.labelRenderer == 'calr'){
     body_age.axesDefaults.labelRenderer = calr;
   }
@@ -186,6 +278,33 @@ $(document).ready(function(){
     visceral_fat.highlighter.show = false;
   visceral_fat.highlighter.sizeAdjust =
     parseFloat(visceral_fat.highlighter.sizeAdjust);
+  if(s4.overlay_visceral_fat){
+  visceral_fat.canvasOverlay.name = 'max normal';
+  visceral_fat.canvasOverlay.show = s4.overlay_visceral_fat.show;
+  visceral_fat.canvasOverlay.objects = [
+    {
+         horizontalLine: {
+           y: s4.overlay_visceral_fat.u3,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    },
+    {
+         horizontalLine: {
+           y: s4.overlay_visceral_fat.n3,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    },
+    {
+         horizontalLine: {
+           y: s4.overlay_visceral_fat.o3,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    }
+  ];
+  }
   if(visceral_fat.axesDefaults.labelRenderer == 'calr'){
     visceral_fat.axesDefaults.labelRenderer = calr;
   }
@@ -213,6 +332,33 @@ $(document).ready(function(){
     waist.highlighter.show = false;
   waist.highlighter.sizeAdjust =
     parseFloat(waist.highlighter.sizeAdjust);
+  if(s4.overlay_waist){
+  waist.canvasOverlay.name = 'max normal';
+  waist.canvasOverlay.show = s4.overlay_waist.show;
+  waist.canvasOverlay.objects = [
+    {
+         horizontalLine: {
+           y: s4.overlay_waist.u3,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    },
+    {
+         horizontalLine: {
+           y: s4.overlay_waist.n3,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    },
+    {
+         horizontalLine: {
+           y: s4.overlay_waist.o3,
+           lineWidth: 5,
+           color: 'rgba(250, 128, 114, 0.2)',
+         }
+    }
+  ];
+  }
   if(waist.axesDefaults.labelRenderer == 'calr'){
     waist.axesDefaults.labelRenderer = calr;
   }
@@ -305,39 +451,9 @@ $(document).ready(function(){
   var chartoptions_bmi = {
     title: 'BMI Graph',
     },
-    canvasOverlay: {
-      name: 'max normal',
-      show: true,
-      objects: [{
-        horizontalLine: {
-          y: 25,
-          lineWidth: 1,
-          color: 'rgb(250, 128, 114)',
-        }
-      }]
-    },
   }
   var chartoptions_body_fat = {
     title: 'Body Fat Graph',
-    },
-    canvasOverlay: {
-      name: 'max overweight',
-      show: true,
-      objects: [
-      {
-        horizontalLine: {
-          y: 27.9,
-          lineWidth: 1,
-          color: 'rgb(250, 128, 114)'
-        }
-      },
-      {  
-        horizontalLine: {
-          y: 21.9,
-          lineWidth: 1,
-          color: 'rgb(250, 128, 114)'
-        }
-      }]
     },
   }
   var chartoptions_muscle = {

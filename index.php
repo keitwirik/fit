@@ -26,9 +26,15 @@ $user= get_user($user_id);
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Body Monitor</title>
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> 
-<link rel="stylesheet" type="text/css" media="screen" href="css/reset.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="css/humanity/jquery-ui-1.8.17.custom.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="css/ui.jqgrid.css" />
+<link rel="stylesheet" 
+    type="text/css" media="screen" 
+    href="css/reset.css" />
+<link rel="stylesheet" 
+    type="text/css" media="screen" 
+    href="css/humanity/jquery-ui-1.8.17.custom.css" />
+<link rel="stylesheet" 
+    type="text/css" media="screen" 
+    href="css/ui.jqgrid.css" />
 <link rel="stylesheet" type="text/css" href="css/jquery.jqplot.css" /> 
 <link rel="stylesheet" type="text/css" href="css/style.css" /> 
  
@@ -36,14 +42,22 @@ $user= get_user($user_id);
 <script src="js/i18n/grid.locale-en.js" type="text/javascript"></script>
 <script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
 <script src="js/jquery.jqplot.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/plugins/jqplot.canvasTextRenderer.min.js"></script>
-<script type="text/javascript" src="js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
-<script type="text/javascript" src="js/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
-<script type="text/javascript" src="js/plugins/jqplot.dateAxisRenderer.min.js"></script>
-<script type="text/javascript" src="js/plugins/jqplot.trendline.min.js"></script>
-<script type="text/javascript" src="js/plugins/jqplot.highlighter.min.js"></script>
-<script type="text/javascript" src="js/plugins/jqplot.cursor.min.js"></script>
-<script type="text/javascript" src="js/plugins/jqplot.canvasOverlay.min.js"></script>
+<script type="text/javascript" 
+    src="js/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script type="text/javascript" 
+    src="js/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+<script type="text/javascript" 
+    src="js/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+<script type="text/javascript" 
+    src="js/plugins/jqplot.dateAxisRenderer.min.js"></script>
+<script type="text/javascript" 
+    src="js/plugins/jqplot.trendline.min.js"></script>
+<script type="text/javascript" 
+    src="js/plugins/jqplot.highlighter.min.js"></script>
+<script type="text/javascript" 
+    src="js/plugins/jqplot.cursor.min.js"></script>
+<script type="text/javascript" 
+    src="js/plugins/jqplot.canvasOverlay.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="/js/excanvas.js"></script><![endif]-->
 </head>

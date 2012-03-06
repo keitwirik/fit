@@ -1,7 +1,7 @@
 <?php
 
 include 'dbo.php';
-//include 'mappings.php';
+include 'mappings.php';
 
 //convert timestamp to short_date
 function short_time($timestamp){
@@ -18,6 +18,11 @@ function miss_date($var){
 
 //FIXME hardcoding the user id
 $user_id = 1;
+
+// query user info
+$STH = $DBH->query("SELECT * FROM users WHERE id = '$user_id'");
+$STH ->setFetchMode(PDO::FETCH_OBJ);
+$user = $STH->fetch();
 
 // start chart class
 class chart  {
@@ -60,6 +65,7 @@ class chart  {
 //        $this->axes->yaxis->max = $ranges->max_weight;
         $this->highlighter->show = 'true';
         $this->highlighter->sizeAdjust = '7.5';
+        $this->canvasOverlay->show = 'true';
         $this->cursor->show = 'false';
         $this->series->color = 'orange';
 
@@ -109,6 +115,15 @@ $s->visceral_fat = new chart('visceral_fat');
 $s->waist = new chart('waist');
 $s->rm = new chart('rm');
 
+// gather user info needed for overlays
+$gender = $user->gender;
+$age = $user->age;
+$height = $user->height;
+
+// get overlays from mappings
+$s->overlay_bmi = zone_bmi();
+$s->overlay_body_fat = zone_body_fat($gender,$age);
+$s->overlay_muscle = zone_muscle($gender,$age);
 
 // correct for days with missing entries, waist only
 $s->waist->data = array_values(array_filter($s->waist->data, "miss_date"));
