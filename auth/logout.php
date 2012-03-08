@@ -9,5 +9,5 @@ checkLoggedIn("yes");
 flushMemberSession();
 
 // Redirect:
-header("Location: ..//login.php");
+header("Location: login.php");
 ?>

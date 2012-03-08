@@ -81,8 +81,9 @@ $user= get_user($user_id);
 <body>
 <div id="envelope">
     <header>
-        <h1 class="user"><?php echo $user->name; ?></h1>
+        <h1 class="user"><?php echo $user->name; ?> <span class="edit"><a href="users/profile.php?u=<?php echo $user->cookie_hash; ?>">edit</a></h1>
         <h2 class="motd">motd - daily aphorism here</h2>
+        <p class="logout"><a href="auth/logout.php">log out</a></p>
     </header>   
     <nav class="chart_nav">
         <ul>
