@@ -45,7 +45,7 @@ function checkLoggedIn($status){
 		// if yes, check user is logged in:
 		case "yes":
 			if(!isset($_SESSION["loggedIn"])){
-				header("Location: ../auth/login.php");
+				header("Location: auth/login.php");
 				exit;
 			}
 			break;
