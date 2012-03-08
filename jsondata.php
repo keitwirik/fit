@@ -17,13 +17,16 @@ function miss_date($var){
 }
 
 //FIXME hardcoding the user id
-$user_id = 1;
-
-// query user info
-$STH = $DBH->query("SELECT * FROM users WHERE id = '$user_id'");
-$STH ->setFetchMode(PDO::FETCH_OBJ);
-$user = $STH->fetch();
-
+if(isset($_GET['u'])){
+    $u = $_GET['u'];
+    // query user info
+    $STH = $DBH->query("SELECT * FROM users 
+                        WHERE cookie_hash = '$u'");
+    $STH ->setFetchMode(PDO::FETCH_OBJ);
+    $user = $STH->fetch();
+    $user_id = $user->id;
+//print_r($user_id);die;
+}
 // start chart class
 class chart  {
     private $titles = array();
@@ -60,7 +63,8 @@ class chart  {
         $this->axes->xaxis->label = 'Days';
         $this->axes->xaxis->pad = '0';
         $this->axes->xaxis->renderer = 'dar';
-        $this->axes->yaxis->label = 'yaxis';
+        $this->axes->yaxis->label = $this->labels[$this->chartoptions];
+//    these are dealt with in ranges obj below 
 //        $this->axes->yaxis->min = $ranges->min_weight;
 //        $this->axes->yaxis->max = $ranges->max_weight;
         $this->highlighter->show = 'true';
@@ -105,6 +109,10 @@ $STH = $DBH->query("SELECT
 $STH->setFetchMode(PDO::FETCH_OBJ);
 
 $ranges = $STH->fetch();
+// if bottom and top range are both in the same zone
+// I should pass a background color for the whole chart
+// maybe even a gradient for mixed zones
+
 $s = new stdClass;
 $s->weight = new chart('weight');
 $s->bmi =  new chart('bmi');
@@ -124,6 +132,9 @@ $height = $user->height;
 $s->overlay_bmi = zone_bmi();
 $s->overlay_body_fat = zone_body_fat($gender,$age);
 $s->overlay_muscle = zone_muscle($gender,$age);
+$s->overlay_body_age = zone_body_age($age);
+$s->overlay_visceral_fat = zone_visceral_fat();
+$s->overlay_waist = zone_waist($gender);
 
 // correct for days with missing entries, waist only
 $s->waist->data = array_values(array_filter($s->waist->data, "miss_date"));

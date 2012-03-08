@@ -14,7 +14,7 @@ $(document).ready(function(){
     });
     return ret;
   };
-  var jsonurl = "./jsondata.php";
+  var jsonurl = "./jsondata.php?u=" + hash;
   s4 = ajaxDataRenderer(jsonurl);
   console.log(s4);
   
@@ -230,21 +230,21 @@ $(document).ready(function(){
   body_age.canvasOverlay.objects = [
     {
          horizontalLine: {
-           y: s4.overlay_body_age.u3,
+           y: s4.overlay_body_age.u,
            lineWidth: 5,
            color: 'rgba(250, 128, 114, 0.2)',
          }
     },
     {
          horizontalLine: {
-           y: s4.overlay_body_age.n3,
+           y: s4.overlay_body_age.n,
            lineWidth: 5,
            color: 'rgba(250, 128, 114, 0.2)',
          }
     },
     {
          horizontalLine: {
-           y: s4.overlay_body_age.o3,
+           y: s4.overlay_body_age.o,
            lineWidth: 5,
            color: 'rgba(250, 128, 114, 0.2)',
          }
@@ -284,21 +284,21 @@ $(document).ready(function(){
   visceral_fat.canvasOverlay.objects = [
     {
          horizontalLine: {
-           y: s4.overlay_visceral_fat.u3,
+           y: s4.overlay_visceral_fat.u,
            lineWidth: 5,
            color: 'rgba(250, 128, 114, 0.2)',
          }
     },
     {
          horizontalLine: {
-           y: s4.overlay_visceral_fat.n3,
+           y: s4.overlay_visceral_fat.n,
            lineWidth: 5,
            color: 'rgba(250, 128, 114, 0.2)',
          }
     },
     {
          horizontalLine: {
-           y: s4.overlay_visceral_fat.o3,
+           y: s4.overlay_visceral_fat.o,
            lineWidth: 5,
            color: 'rgba(250, 128, 114, 0.2)',
          }
@@ -338,21 +338,21 @@ $(document).ready(function(){
   waist.canvasOverlay.objects = [
     {
          horizontalLine: {
-           y: s4.overlay_waist.u3,
+           y: s4.overlay_waist.u,
            lineWidth: 5,
            color: 'rgba(250, 128, 114, 0.2)',
          }
     },
     {
          horizontalLine: {
-           y: s4.overlay_waist.n3,
+           y: s4.overlay_waist.n,
            lineWidth: 5,
            color: 'rgba(250, 128, 114, 0.2)',
          }
     },
     {
          horizontalLine: {
-           y: s4.overlay_waist.o3,
+           y: s4.overlay_waist.o,
            lineWidth: 5,
            color: 'rgba(250, 128, 114, 0.2)',
          }
@@ -697,7 +697,7 @@ $('.nav_rm').click(function(){
     viewrecords: true,
     gridview: true,
     autowidth: true,
-    caption: '<?php echo $user->name; ?>\'s Progress',
+    caption: 'Your name here\'s Progress',
     editurl: 'edit.php',
     //loadComplete: [reloadEvents, $.jqplot('plot1', chartoptions).replot()]
     loadComplete: [reloadEvents],

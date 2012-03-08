@@ -168,5 +168,46 @@ function zone_muscle($gender,$age) {
     }
 }
 
+// returns array zones
+function zone_body_age($age) {
+    $zones_body_age = array(
+        'show' => true,
+        'u' => ($age - 5),
+        'n' => ($age + 1),
+        'o' => ($age + 5),
+        'v' => 120,
+    );
+    return $zones_body_age;
+}
+
+// returns array zones
+function zone_visceral_fat() {
+    $zones_visceral_fat = array(
+        'show' => true,
+        'u' => 0,
+        'n' => 9,
+        'o' => 14,
+        'v' => 100,
+    );
+    return $zones_visceral_fat;
+}
+
+
+function zone_waist($gender) {
+    if($gender == "Male") {
+        $zones_waist = array(
+            'show' => true,
+            'n' => 40
+        );
+        return $zones_waist;
+    } elseif($gender == "Female") {   
+        $zones_waist = array(
+            'show' => true,
+            'n' => 335
+        );
+        return $zones_waist;
+    }
+}
+
 //print_r(zone_body_fat('Male', 80));
 ?>

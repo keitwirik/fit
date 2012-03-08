@@ -1,9 +1,22 @@
 <?php
 
 // FIXME hardcoding the user id for now
-$user_id = 1;
-
+require_once('dbo.php');
 require_once('dbconfig.php');
+require_once('config.php');
+
+checkLoggedIn("yes");
+if(isset($_GET['u'])){
+    $u = $_GET['u'];
+    // query user info
+    $STH = $DBH->query("SELECT * FROM users 
+                        WHERE cookie_hash = '$u'");
+    $STH ->setFetchMode(PDO::FETCH_OBJ);
+    $user = $STH->fetch();
+    $user_id = $user->id;
+    $user_hash = $user->cookie_hash;
+//print_r($user_hash);die;
+}
 
 $db = mysql_connect($dbhost, $dbuser, $dbpassword) 
     or die("Connection Error:" . mysql_error());
@@ -11,13 +24,15 @@ $db = mysql_connect($dbhost, $dbuser, $dbpassword)
 mysql_select_db($database) or die("Error connecting to db.");
 
 function get_user($user_id){
-    $user_qry = mysql_query("SELECT * FROM users WHERE id = '$user_id'")
+    $user_qry = mysql_query("SELECT * FROM users 
+                             WHERE id = '$user_id'")
         or die("Couldn't execute query.".mysql_error());
     $user = mysql_fetch_object($user_qry);
     return $user;
 }
 
 $user= get_user($user_id);
+
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +52,9 @@ $user= get_user($user_id);
     href="css/ui.jqgrid.css" />
 <link rel="stylesheet" type="text/css" href="css/jquery.jqplot.css" /> 
 <link rel="stylesheet" type="text/css" href="css/style.css" /> 
- 
+<script type="text/javascript">
+    var hash = '<?php echo $user_hash; ?>';
+</script> 
 <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script src="js/i18n/grid.locale-en.js" type="text/javascript"></script>
 <script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
