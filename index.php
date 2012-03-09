@@ -23,6 +23,13 @@ $db = mysql_connect($dbhost, $dbuser, $dbpassword)
 // select the database 
 mysql_select_db($database) or die("Error connecting to db.");
 
+// intercept first timers with no data
+$qry = mysql_query("SELECT COUNT(*) AS count FROM records WHERE user = '$user_id'");
+$result = mysql_fetch_array($qry);
+if($result['count'] < 1){
+    header("Location: first_timers.php?u=$user_hash");
+}
+
 function get_user($user_id){
     $user_qry = mysql_query("SELECT * FROM users 
                              WHERE id = '$user_id'")

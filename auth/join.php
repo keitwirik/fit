@@ -48,7 +48,7 @@ if(isset($_POST["submit"])){
 		cleanMemberSession($hash_id);
 
 		// and then redirect them to the members page:
-		header("Location: ../index.php?u=" . $hash_id . "");
+		header("Location: ../users/profile.php?u=" . $hash_id . "");
 
 	}
 }

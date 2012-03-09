@@ -35,12 +35,20 @@ $sord = $_GET['sord'];
  
 // if we not pass at first time index use the first column for the index or what you want
 if(!$sidx) $sidx =1; 
- 
+
+$hash = $_GET['u']; 
+$STH = $DBH->query("SELECT id from users WHERE cookie_hash = '$hash'");  
+  
+# setting the fetch mode  
+$STH->setFetchMode(PDO::FETCH_ASSOC); 
+
+$c = $STH->fetch(); 
+$u = $c['id'];
 // calculate the number of rows for the query. We need this for paging the result 
 
 # using the shortcut ->query() method here since there are no variable  
 # values in the select statement.  
-$STH = $DBH->query('SELECT COUNT(*) AS count from records');  
+$STH = $DBH->query("SELECT COUNT(*) AS count from records WHERE user = '$u'");  
   
 # setting the fetch mode  
 $STH->setFetchMode(PDO::FETCH_ASSOC); 
@@ -71,6 +79,7 @@ if($start <0) $start = 0;
 $STH = $DBH->query("SELECT id, timestamp, weight, bmi, 
                     body_fat, muscle, body_age, visceral_fat,
                     rm, waist FROM records 
+                    WHERE user = $u
                     ORDER BY $sidx $sord LIMIT $start , $limit");
 
 # setting the fetch mode  

@@ -674,7 +674,7 @@ $('.nav_rm').click(function(){
   }
 
   $("#list").jqGrid({
-    url:'generate_grid.php',
+    url:'generate_grid.php?u=' + hash,
     datatype: 'xml',
     mtype: 'GET',
     colNames:[
