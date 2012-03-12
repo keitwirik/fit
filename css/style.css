@@ -2,14 +2,39 @@ html, body {
     margin: 0;
     padding: 0;
     font-size: 75%;
+    font-family: Ubuntu, helvetica, arial, sans-serif;
+}
+
+body {
+    background-repeat:repeat-x;
+    background-image: 
+        linear-gradient(bottom, #FCFCFC 12%, #2558B8 40%);
+    background-image: 
+        -o-linear-gradient(bottom, #FCFCFC 12%, #2558B8 40%);
+    background-image: 
+        -moz-linear-gradient(bottom, #FCFCFC 12%, #2558B8 40%);
+    background-image: 
+        -webkit-linear-gradient(bottom, #FCFCFC 12%, #2558B8 40%);
+    background-image: 
+        -ms-linear-gradient(bottom, #FCFCFC 12%, #2558B8 40%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.12, #FCFCFC),
+        color-stop(0.4, #2558B8)
+    );
 }
 
 #envelope {
     margin:10px auto;
     width:775px;
-    border:1px dotted #aaa;
+    border:3px solid #999;
     padding:10px;
     border-radius:10px;
+    background:#ddd;
+    box-shadow: 0 0 8px 2px #555;
 }
 
 #envelope header h1 {float:left;margin-right:10px;}
@@ -25,7 +50,7 @@ div.ui-jqgrid-bdiv {height:250px;}
 nav.chart_nav ul li {
     list-style:none;
     display:inline;
-    margin:0 15px;
+    margin:0 20px;
     font-size:16px;
     cursor:pointer;
     text-decoration:underline;
@@ -48,6 +73,10 @@ body #editmodlist {
     display:none;
 }
 
+nav.chart_nav {
+    text-align:center;
+}
+
 nav.chart_nav ul li.nav_active {
     color:black;
     cursor:default;
@@ -55,10 +84,13 @@ nav.chart_nav ul li.nav_active {
 }
 
 .jqplot-highlighter-tooltip {
-    font-size:15px;
-    background:#fff;
+    font-size:16px;
+    background:#999;
     border:2px solid #7473F7;
     border-radius:8px;
     padding:5px;
+    color:#fff;
+    text-shadow:1px 1px 1px #555;
+    font-family: Ubuntu, helvetica, arial, sans-serif;
 }
         

@@ -59,6 +59,7 @@ $user= get_user($user_id);
     href="css/ui.jqgrid.css" />
 <link rel="stylesheet" type="text/css" href="css/jquery.jqplot.css" /> 
 <link rel="stylesheet" type="text/css" href="css/style.css" /> 
+<link href='http://fonts.googleapis.com/css?family=Ubuntu:500italic,700italic,500,300,700,400italic,300italic,400' rel='stylesheet' type='text/css'>
 <script type="text/javascript">
     var hash = '<?php echo $user_hash; ?>';
 </script> 

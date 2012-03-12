@@ -60,7 +60,7 @@ class chart  {
         $this->axesDefaults->labelRenderer = 'calr';
         $this->axesDefaults->tickRenderer = 'catr';
         $this->axes->xaxis->label = 'Days';
-        $this->axes->xaxis->pad = '0';
+        $this->axes->xaxis->pad = '20';
         $this->axes->xaxis->renderer = 'dar';
         $this->axes->yaxis->label = $this->labels[$this->chartoptions];
 //    these are dealt with in ranges obj below 
