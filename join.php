@@ -1,7 +1,7 @@
 <?php
 
-include_once("../config.php");
-require_once("../dbo.php");
+include_once("config.php");
+require_once("dbo.php");
 
 // Check user not logged in already:
 checkLoggedIn("no");
@@ -48,7 +48,7 @@ if(isset($_POST["submit"])){
 		cleanMemberSession($hash_id);
 
 		// and then redirect them to the members page:
-		header("Location: ../users/profile.php?u=" . $hash_id . "");
+		header("Location: profile.php?u=" . $hash_id . "");
 
 	}
 }

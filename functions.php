@@ -45,7 +45,7 @@ function checkLoggedIn($status){
 		// if yes, check user is logged in:
 		case "yes":
 			if(!isset($_SESSION["loggedIn"])){
-				header("Location: auth/login.php");
+				header("Location: login.php");
 				exit;
 			}
 			break;
@@ -106,6 +106,69 @@ function flushMemberSession() {
 	return true;
 }
 
+// calculates projected goal values
+// takes an array of data, index and value. 
+// projection_n is the goal value
+// returns the projected index for the projection_n value.
+// $ret can be "index" or "value"
+// if "value" the function uses projection_n as the index
+// and returns the projected value for that index  
+function calc_goal($data, $projection_n, $ret = "index") {
+
+    $x = array();
+    $y = array();
+    $n = 0;
+    $xx = array();
+    $xy = array();
+    $sum_x = 0;
+    $sum_y = 0;
+    $sum_xy = 0;
+    $sum_xx = 0;
+    $slope = 0;
+    $intercept = 0;
+
+    if($ret == "index") {
+        foreach($data as $k => $v) {
+            $k++;
+            $x[] = $k;      // index of days
+            $y[] = $v[1];   // values of measurment
+        }
+    } elseif($ret == "value") {
+        foreach($data as $k => $v) {
+            $k++;
+            $y[] = $k;      // index of days
+            $x[] = $v[1];   // values of measurment
+        }
+    }
+
+    $n = count($x);
+
+    foreach($x as $k => $v) {
+        $xx[] = ($v * $v);
+        $xy[] = ($y[$k] * $v);
+        $sum_x = ($sum_x + $v);
+        $sum_xy = ($sum_xy + ($v * $y[$k]));
+        $sum_xx = ($sum_xx + ($v * $v));
+    }
+
+    foreach($y as $k => $v) {
+        $sum_y = ($sum_y + $v);
+    }
+
+    $slope = round((($n * $sum_xy) - ($sum_x * $sum_y)) / 
+                    ($n * $sum_xx - ($sum_x * $sum_x)), 2);  
+
+    $intercept = round((($sum_y - ($slope * $sum_x)) / $n), 4);
+
+    $projection_val = $intercept + ($slope * $projection_n);
+
+    if($ret == "value") {
+         $projection_val = round($projection_val);
+    }
+
+    return $projection_val;
+
+}
 
 function doCSS() {
 	?>

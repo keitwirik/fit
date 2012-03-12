@@ -1,7 +1,7 @@
 <?php
 
-require_once("../config.php");
-include '../dbo.php';
+require_once("config.php");
+include 'dbo.php';
 
 // Check user not logged in already
 checkLoggedIn("no");
@@ -39,7 +39,7 @@ if(isset($_POST["submit"])) {
 	// no errors log in
     cleanMemberSession($row->cookie_hash);
 
-	header("Location: ../index.php?u=" . $row->cookie_hash . "");
+	header("Location: index.php?u=" . $row->cookie_hash . "");
 } else {
 	// The login form wasn't filled out yet, display the login form for the user to fill in:
 	doIndex();

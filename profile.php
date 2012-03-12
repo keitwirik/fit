@@ -1,8 +1,8 @@
 <?php
 // view and edit user data
 
-require_once('../dbo.php');
-require_once('../config.php');
+require_once('dbo.php');
+require_once('config.php');
 
 function edit_user($u,$a,$g,$h,$e) {
     global $DBH;
@@ -51,7 +51,7 @@ if(isset($_GET['u'])) {
     $user = $STH->fetch();
 } else {
     echo "no user string";die;
-    header("Location: ../index.php");
+    header("Location: index.php");
 }
 
 
@@ -89,7 +89,7 @@ if(isset($_GET['u'])) {
         <input type="submit" value="Submit" /> 
     </form>
     <nav>
-        <a href="../index.php?u=<?php echo $user->cookie_hash;?>">That looks good. Let's go back to the app</a>
+        <a href="index.php?u=<?php echo $user->cookie_hash;?>">That looks good. Let's go back to the app</a>
     </nav>
 
 </div>

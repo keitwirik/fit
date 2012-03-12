@@ -1,6 +1,6 @@
 <?php
 
-include_once("../config.php");
+include_once("config.php");
 
 // Check user logged in already:
 checkLoggedIn("yes");

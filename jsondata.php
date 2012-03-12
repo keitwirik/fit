@@ -16,7 +16,6 @@ function miss_date($var){
     }
 }
 
-//FIXME hardcoding the user id
 if(isset($_GET['u'])){
     $u = $_GET['u'];
     // query user info

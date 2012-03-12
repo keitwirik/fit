@@ -203,7 +203,7 @@ function zone_waist($gender) {
     } elseif($gender == "Female") {   
         $zones_waist = array(
             'show' => true,
-            'n' => 335
+            'n' => 33.5
         );
         return $zones_waist;
     }
