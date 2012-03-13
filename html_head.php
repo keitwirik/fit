@@ -18,7 +18,11 @@
 <link href='http://fonts.googleapis.com/css?family=Ubuntu:500italic,700italic,500,300,700,400italic,300italic,400' rel='stylesheet' type='text/css'>
 <script type="text/javascript">
     var hash = '<?php  echo $user->cookie_hash;?>';
-    <?php if($result['count'] < 1){echo 'var no_plot = true;';} ?>
+    <?php if($result['count'] < 1) {
+        echo 'var no_plot = true;';
+    } else {
+        echo 'var no_plot = false;';
+    }?>
 </script> 
 <script src="js/jquery-1.7.1.min.js" type="text/javascript"></script>
 <script src="js/i18n/grid.locale-en.js" type="text/javascript"></script>
