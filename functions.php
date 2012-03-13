@@ -224,18 +224,18 @@ function field_validator($field_descr, $field_data,
 	$field_ok=false;
 
 	# this is the regexp for email validation:
-	$email_regexp="^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|";
-	$email_regexp.="(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
+	$email_regexp="/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|/";
+	$email_regexp.="/(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/";
 
 	# a hash array of "types of data" pointing to "regexps" used to validate the data:
 	$data_types=array(
 		"email"=>$email_regexp,
-		"digit"=>"^[0-9]$",
-		"number"=>"^[0-9]+$",
-		"alpha"=>"^[a-zA-Z]+$",
-		"alpha_space"=>"^[a-zA-Z ]+$",
-		"alphanumeric"=>"^[a-zA-Z0-9]+$",
-		"alphanumeric_space"=>"^[a-zA-Z0-9 ]+$",
+		"digit"=>"/^[0-9]$/",
+		"number"=>"/^[0-9]+$/",
+		"alpha"=>"/^[a-zA-Z]+$/",
+		"alpha_space"=>"/^[a-zA-Z ]+$/",
+		"alphanumeric"=>"/^[a-zA-Z0-9]+$/",
+		"alphanumeric_space"=>"/^[a-zA-Z0-9 ]+$/",
 		"string"=>""
 	);
 
@@ -250,7 +250,7 @@ function field_validator($field_descr, $field_data,
 		$field_ok = true;
 	} else {
 		# Check the field data against the regexp pattern:
-		$field_ok = ereg($data_types[$field_type], $field_data);
+		$field_ok = preg_match($data_types[$field_type], $field_data);
 	}
 
 	# if field data is bad, add message:
