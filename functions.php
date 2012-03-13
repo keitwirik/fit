@@ -19,14 +19,16 @@ function newUser($login, $password) {
 
     $STH->execute();
 
-    $STH = $DBH->prepare("SELECT cookie_hash 
-                          FROM users WHERE name = :name");
+    $STH = $DBH->prepare("SELECT id 
+                          FROM users WHERE name = :name
+                          AND cookie_hash = :cookie_hash");
     $STH->bindParam(':name', $name);
+    $STH->bindParam(':cookie_hash', $cookie_hash);
     $STH->setFetchMode(PDO::FETCH_OBJ);
     $STH->execute();
     $user = $STH->fetch();
-    $hash_id = $user->cookie_hash;
-	return $hash_id;
+    $user_id = $user->id;
+	return $user_id;
 } 
 
 
@@ -61,11 +63,25 @@ function checkLoggedIn($status){
 	return true;
 } 
 
+function getLoggedInUser(){
+    global $DBH;
+    $STH = $DBH->prepare("SELECT user_id 
+                          FROM sessions
+                          WHERE session_id = :session_id");
+    $session_id = session_id();
+    $STH->bindParam(':session_id', $session_id);
+    $STH->setFetchMode(PDO::FETCH_OBJ);
+    $STH->execute();
+    $row = $STH->fetch();
+    $user_id = $row->user_id;
+    return $user_id;
+}
 
 function checkPass($login, $password) {
     
     global $DBH;
-    $STH = $DBH->prepare("SELECT name, password, cookie_hash FROM users 
+    $STH = $DBH->prepare("SELECT id, name, password
+                          FROM users 
                           WHERE name = :name 
                           AND password = :password");
     
@@ -87,9 +103,16 @@ function checkPass($login, $password) {
 } 
 
 
-function cleanMemberSession($hash_id) {
-	$_SESSION["login"]=$hash_id;
-	$_SESSION["loggedIn"]=true;
+function cleanMemberSession($id) {
+    global $DBH;
+    $STH = $DBH->prepare("INSERT INTO sessions (user_id, session_id)
+                          values (:id, :session)");
+	$_SESSION["user"]=$id;
+    $_SESSION["loggedIn"]=true;
+    $session = session_id();
+	$STH->bindParam(':id', $id);
+	$STH->bindParam(':session', $session);
+    $STH->execute();
 } 
 
 
@@ -98,11 +121,19 @@ function flushMemberSession() {
 	unset($_SESSION["login"]);
 	unset($_SESSION["password"]);
 	unset($_SESSION["loggedIn"]);
+    unset($_SESSION["user"]);
 
+
+    global $DBH;
+    $STH = $DBH->prepare("DELETE FROM sessions WHERE
+                          session_id =  :session");
+    $session = session_id();
+	$STH->bindParam(':session', $session);
+    $STH->execute();
 	// and use session_destroy to destroy all data associated
 	// with current session:
+    session_unset();
 	session_destroy();
-
 	return true;
 }
 

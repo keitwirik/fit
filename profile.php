@@ -43,16 +43,14 @@ if(isset($_GET['u'])) {
             $user_email = $_GET['email'];
             $edit_user = edit_user($u,$user_age,$user_gender,$user_height,$user_email);
     }
-
+}
     // get current user data
+    $u = getLoggedInUser();
     $STH = $DBH->query("SELECT * FROM users 
-                        WHERE cookie_hash = '$u'");
+                        WHERE id = '$u'");
     $STH ->setFetchMode(PDO::FETCH_OBJ);
     $user = $STH->fetch();
-} else {
-    echo "no user string";die;
-    header("Location: index.php");
-}
+
 
 
 
@@ -89,7 +87,7 @@ if(isset($_GET['u'])) {
         <input type="submit" value="Submit" /> 
     </form>
     <nav>
-        <a href="index.php?u=<?php echo $user->cookie_hash;?>">That looks good. Let's go back to the app</a>
+        <a href="index.php">That looks good. Let's go back to the app</a>
     </nav>
 
 </div>

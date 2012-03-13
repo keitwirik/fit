@@ -7,11 +7,8 @@ error_reporting(E_ALL);
 require_once("dbo.php");
 require_once("functions.php");
 
-//  Register session variables for auth
-//FIXME these are depreciated
-session_register("login");
-session_register("password");
-session_register("loggedIn");
+//  start session 
+session_start();
 
 // auth message stack
 $messages=array();

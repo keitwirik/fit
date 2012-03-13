@@ -2,7 +2,7 @@
 
 include 'dbo.php';
 include 'mappings.php';
-
+include 'functions.php';
 //convert timestamp to short_date
 function short_time($timestamp){
     $short_date = date("j-M-Y", strtotime($timestamp));
@@ -16,6 +16,10 @@ function miss_date($var){
     }
 }
 
+//checkLoggedIn("yes");
+//$user_id = getLoggedInUser();
+//echo $user_id; die;
+
 if(isset($_GET['u'])){
     $u = $_GET['u'];
     // query user info
@@ -26,6 +30,8 @@ if(isset($_GET['u'])){
     $user_id = $user->id;
 //print_r($user_id);die;
 }
+
+
 // start chart class
 class chart  {
     private $titles = array();

@@ -42,13 +42,13 @@ if(isset($_POST["submit"])){
 
 	if(empty($messages)) {
 		// registration ok, get user id and update db with new info
-		$hash_id = newUser($_POST["login"], $_POST["password"]);
+		$user_id = newUser($_POST["login"], $_POST["password"]);
 
 		// Log the user in:
-		cleanMemberSession($hash_id);
+		cleanMemberSession($user_id);
 
-		// and then redirect them to the members page:
-		header("Location: profile.php?u=" . $hash_id . "");
+		// and then redirect them to the profile page:
+		header("Location: profile.php");
 
 	}
 }

@@ -93,4 +93,7 @@ nav.chart_nav ul li.nav_active {
     text-shadow:1px 1px 1px #555;
     font-family: Ubuntu, helvetica, arial, sans-serif;
 }
-        
+
+
+
+body#first_timer label {display:block;}       

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-
+if(!(no_plot == true)){
   $.jqplot.config.enablePlugins = true;
   
   var ajaxDataRenderer = function(url, plot, options) {
@@ -580,7 +580,7 @@ $('.nav_rm').click(function(){
   $('#plot8').show();
   plot8.replot();
 });
-
+} // end of no_plot exception
 // end of jqplot
 
 
@@ -668,7 +668,7 @@ $('.nav_rm').click(function(){
   // update grid for different users
   function reloadEvents(){
     $('h1.user').click(function(){
-      $('#list').setGridParam({url:'generate_grid.php'}); 
+      $('#list').setGridParam({url:'generate_grid.php?u=' + hash}); 
       $('#list').trigger("reloadGrid");  
     });
   }
@@ -698,7 +698,7 @@ $('.nav_rm').click(function(){
     gridview: true,
     autowidth: true,
     caption: 'Your name here\'s Progress',
-    editurl: 'edit.php',
+    editurl: 'edit.php?u=' + hash,
     //loadComplete: [reloadEvents, $.jqplot('plot1', chartoptions).replot()]
     loadComplete: [reloadEvents],
     beforeShowForm: function(formid) {

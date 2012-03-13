@@ -7,7 +7,7 @@ include 'dbo.php';
 checkLoggedIn("no");
 
 // Page title:
-$title="Member Login Page";
+$title="Fitness App Login Page";
 
 // if $submit variable set, login info submitted:
 if(isset($_POST["submit"])) {
@@ -37,9 +37,9 @@ if(isset($_POST["submit"])) {
 	}
 
 	// no errors log in
-    cleanMemberSession($row->cookie_hash);
+    cleanMemberSession($row->id);
 
-	header("Location: index.php?u=" . $row->cookie_hash . "");
+	header("Location: index.php");
 } else {
 	// The login form wasn't filled out yet, display the login form for the user to fill in:
 	doIndex();
