@@ -172,7 +172,6 @@ function flushMemberSession() {
 	session_destroy();
 	return true;
 }
-
 // calculates projected goal values
 // takes an array of data, index and value. 
 // projection_n is the goal value
@@ -194,13 +193,14 @@ function calc_goal($data, $projection_n, $ret = "index") {
     $slope = 0;
     $intercept = 0;
 
-    if($ret == "index") {
+    if($ret == "value") {
         foreach($data as $k => $v) {
             $k++;
             $x[] = $k;      // index of days
             $y[] = $v[1];   // values of measurment
         }
-    } elseif($ret == "value") {
+
+    } elseif($ret == "index") {
         foreach($data as $k => $v) {
             $k++;
             $y[] = $k;      // index of days
@@ -210,6 +210,7 @@ function calc_goal($data, $projection_n, $ret = "index") {
 
     $n = count($x);
 
+    
     foreach($x as $k => $v) {
         $xx[] = ($v * $v);
         $xy[] = ($y[$k] * $v);
@@ -217,7 +218,6 @@ function calc_goal($data, $projection_n, $ret = "index") {
         $sum_xy = ($sum_xy + ($v * $y[$k]));
         $sum_xx = ($sum_xx + ($v * $v));
     }
-
     foreach($y as $k => $v) {
         $sum_y = ($sum_y + $v);
     }
@@ -232,10 +232,14 @@ function calc_goal($data, $projection_n, $ret = "index") {
     if($ret == "value") {
          $projection_val = round($projection_val);
     }
+    if($ret == "index") {
+        $projection_val = intval($projection_val);
+    }
 
     return $projection_val;
 
 }
+
 
 function doCSS() {
 	?>

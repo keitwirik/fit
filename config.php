@@ -15,8 +15,8 @@ $messages=array();
 
 // temp goals
 class goal {
-    function __construct($goal) {
-        $this->weight = 40;
+    function __construct($user) {
+        $this->weight = 155;
         $this->body_fat = 18;
         $this->muscle = 45;
         $this->body_age = 40;
@@ -25,6 +25,6 @@ class goal {
     }
 }
 
-$goal_obj = new goal;
+$goal_obj = new goal('a');
 
 ?>

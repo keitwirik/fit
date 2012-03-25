@@ -1,5 +1,6 @@
 <?php
 
+include 'config.php';
 include 'dbo.php';
 include 'mappings.php';
 include 'functions.php';
@@ -106,13 +107,21 @@ $ranges = $STH->fetch();
 
 $s = new stdClass;
 $s->weight = new chart('weight');
+unset($s->weight->goal_data);
 $s->bmi =  new chart('bmi');
+unset($s->bmi->goal_data);
 $s->body_fat = new chart('body_fat');
+unset($s->body_fat->goal_data);
 $s->muscle = new chart('muscle');
+unset($s->muscle->goal_data);
 $s->body_age = new chart('body_age');
+unset($s->body_age->goal_data);
 $s->visceral_fat = new chart('visceral_fat');
+unset($s->visceral_fat->goal_data);
 $s->waist = new chart('waist');
+unset($s->waist->goal_data);
 $s->rm = new chart('rm');
+unset($s->rm->goal_data);
 
 // gather user info needed for overlays
 $gender = $user->gender;
@@ -129,15 +138,13 @@ $s->overlay_waist = zone_waist($gender);
 
 // collect goal values
 $g = $goal_obj;
-$s->goal->weight = calc_goal($s->weight->data, $g->weight, $ret='value'); 
-$s->goal->body_fat = calc_goal($s->body_fat->data, $g->body_fat, $ret='value'); 
-$s->goal->muscle = calc_goal($s->muscle->data, $g->muscle,$ret='value'); 
-$s->goal->body_age = calc_goal($s->body_age->data, $g->body_age, $ret='value'); 
-$s->goal->visceral_fat = calc_goal($s->visceral_fat->data, $g->visceral_fat, $ret='value'); 
+$s->goal->weight = calc_goal($s->weight->data, $g->weight, $ret='index'); 
+$s->goal->body_fat = calc_goal($s->body_fat->data, $g->body_fat, $ret='index'); 
+$s->goal->muscle = calc_goal($s->muscle->data, $g->muscle,$ret='index'); 
+$s->goal->body_age = calc_goal($s->body_age->data, $g->body_age, $ret='index'); 
+$s->goal->visceral_fat = calc_goal($s->visceral_fat->data, $g->visceral_fat, $ret='index'); 
 $s->goal->waist = calc_goal($s->waist->data, $g->waist); 
 
-// correct for days with missing entries, waist only
-$s->waist->data = array_values(array_filter($s->waist->data, "miss_date"));
 
 $s->ranges = $ranges;
 
