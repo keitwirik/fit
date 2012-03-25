@@ -1,6 +1,42 @@
 <?php
 
 
+//convert timestamp to short_date
+function short_time($timestamp){
+    $short_date = date("j-M-Y", strtotime($timestamp));
+    return $short_date;
+}
+
+//skips days without records
+function miss_date($var){
+    if($var[1] != 0){
+        return $var;
+    }
+}
+
+// fills in missing dates with a value of zero
+function missing_dates($arr) {
+    foreach($arr as $a){
+        $b[] = array(date("d-m-Y", strtotime($a[0])), $a[1]);
+        $c[] = date("d-m-Y", strtotime($a[0]));
+    }
+    $begin=date_create(date("d-m-Y", strtotime($c[0])));
+    $now=date_create(date("d-m-Y"));
+    $i = new DateInterval('P1D');
+    $period=new DatePeriod($begin,$i,$now);
+    foreach ($period as $d){
+      $day=$d->format('d-m-Y'); 
+      if(in_array($day, $c)) {
+        $q = array_search($day, $c);
+        $f[] = array(date("j-M-Y", strtotime($day)), $b[$q][1]);   
+      } else {
+        $f[] = array(date("j-M-Y", strtotime($day)), '0');
+      }
+    }
+    
+    return $f;
+}
+
 function newUser($login, $password) {
     global $DBH;
     $STH = $DBH->prepare("INSERT INTO users (

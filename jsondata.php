@@ -3,22 +3,6 @@
 include 'dbo.php';
 include 'mappings.php';
 include 'functions.php';
-//convert timestamp to short_date
-function short_time($timestamp){
-    $short_date = date("j-M-Y", strtotime($timestamp));
-    return $short_date;
-}
-
-//skips days without records
-function miss_date($var){
-    if($var[1] != 0){
-        return $var;
-    }
-}
-
-//checkLoggedIn("yes");
-//$user_id = getLoggedInUser();
-//echo $user_id; die;
 
 if(isset($_GET['u'])){
     $u = $_GET['u'];
@@ -95,6 +79,8 @@ class chart  {
                 floatval($row->$chart_name)
             );
         }
+        $this->goal_data = missing_dates($this->data);
+        $this->data = array_values(array_filter($this->goal_data, "miss_date"));
     }
 }
 
@@ -140,6 +126,15 @@ $s->overlay_muscle = zone_muscle($gender,$age);
 $s->overlay_body_age = zone_body_age($age);
 $s->overlay_visceral_fat = zone_visceral_fat();
 $s->overlay_waist = zone_waist($gender);
+
+// collect goal values
+$g = $goal_obj;
+$s->goal->weight = calc_goal($s->weight->data, $g->weight, $ret='value'); 
+$s->goal->body_fat = calc_goal($s->body_fat->data, $g->body_fat, $ret='value'); 
+$s->goal->muscle = calc_goal($s->muscle->data, $g->muscle,$ret='value'); 
+$s->goal->body_age = calc_goal($s->body_age->data, $g->body_age, $ret='value'); 
+$s->goal->visceral_fat = calc_goal($s->visceral_fat->data, $g->visceral_fat, $ret='value'); 
+$s->goal->waist = calc_goal($s->waist->data, $g->waist); 
 
 // correct for days with missing entries, waist only
 $s->waist->data = array_values(array_filter($s->waist->data, "miss_date"));
