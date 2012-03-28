@@ -18,6 +18,7 @@
 <link href='http://fonts.googleapis.com/css?family=Ubuntu:500italic,700italic,500,300,700,400italic,300italic,400' rel='stylesheet' type='text/css'>
 <script type="text/javascript">
     var hash = '<?php  echo $user->cookie_hash;?>';
+    var begin_date = '<?php echo $begin_date;?>';
     <?php if($result['count'] < 1) {
         echo 'var no_plot = true;';
     } else {

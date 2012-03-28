@@ -14,7 +14,7 @@ if(!(no_plot == true)){
     });
     return ret;
   };
-  var jsonurl = "./jsondata.php?u=" + hash;
+  var jsonurl = "./jsondata.php?u=" + hash + "&r=" + begin_date;
   s4 = ajaxDataRenderer(jsonurl);
   console.log(s4);
   

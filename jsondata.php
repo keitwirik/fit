@@ -1,6 +1,7 @@
 <?php
 
-include 'config.php';
+include 'app_top.php';
+//include 'config.php';
 include 'dbo.php';
 include 'mappings.php';
 include 'functions.php';
@@ -15,7 +16,13 @@ if(isset($_GET['u'])){
     $user_id = $user->id;
 //print_r($user_id);die;
 }
-
+if(isset($_GET['r'])) {
+    $date_range = $_GET['r'];
+}else{
+    $date_range = 0;
+}
+$date_range = date_ranges($date_range);
+$begin_date = $date_range->format('Y-m-d');
 
 // start chart class
 class chart  {
@@ -24,7 +31,8 @@ class chart  {
     function __construct($chart_name) {
         global $DBH;
         global $user_id;
-        global $ranges; 
+        global $ranges;
+        global $begin_date; 
         $this->chartoptions = $chart_name;
         $this->titles = array(
             'weight' => 'Weight Graph',
@@ -63,16 +71,18 @@ class chart  {
         $this->cursor->show = 'false';
         $this->series->color = 'orange';
 
-        $STH = $DBH->query("SELECT id, timestamp, weight, bmi, 
+        $STH = $DBH->prepare("SELECT id, timestamp, weight, bmi, 
                             body_fat, muscle, body_age,
                             visceral_fat, rm, waist
                             FROM records
-                            WHERE user = '$user_id' 
+                            WHERE user = :user_id 
+                            AND timestamp >= :begin_date
                             ORDER BY timestamp"
                            );
-
+        $STH->bindParam(':user_id', $user_id);
+        $STH->bindParam(':begin_date', $begin_date);
         $STH->setFetchMode(PDO::FETCH_OBJ);
-
+        $STH->execute();
         while($row = $STH->fetch()) {
             $date = short_time($row->timestamp);
             $this->data[] = array(

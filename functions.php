@@ -14,6 +14,17 @@ function miss_date($var){
     }
 }
 
+// date ranges
+function date_ranges($range) {
+    $now = date_create(date("Y-m-d")); 
+    if(intval($range) == 0) {
+        $start_date = new DateTime('2000-01-01');
+    } else {
+        $start_date = $now->sub(new DateInterval('P' . intval($range) . 'D')); 
+    }
+    return $start_date;
+}
+
 // fills in missing dates with a value of zero
 function missing_dates($arr) {
     foreach($arr as $a){
