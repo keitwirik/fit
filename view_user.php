@@ -35,9 +35,7 @@ $user= get_user($user_id);
 <body>
 <div id="envelope">
     <header>
-        <h1 class="user"><?php echo $user->name; ?> <span class="edit"><a href="profile.php">edit</a></h1>
-        <h2 class="motd">motd - daily aphorism here</h2>
-        <p class="logout"><a href="logout.php">log out</a></p>
+        <h1 class="user"> shared chart from <?php echo $user->name; ?></h1>
     </header>   
     <nav class="chart_nav">
         <ul>
