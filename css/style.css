@@ -75,6 +75,7 @@ body #editmodlist {
 
 nav.chart_nav {
     text-align:center;
+    clear:both;
 }
 
 nav.chart_nav ul li.nav_active {
