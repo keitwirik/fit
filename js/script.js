@@ -1,3 +1,5 @@
+var nogd = false; // true then only show chart
+
 $(document).ready(function(){
 if(!(no_plot == true)){
   $.jqplot.config.enablePlugins = true;
@@ -583,7 +585,7 @@ $('.nav_rm').click(function(){
 } // end of no_plot exception
 // end of jqplot
 
-
+if(nogd == false){
 // jqgrid settings
   var formEditSize = 15;
   var gridColModel = [ 
@@ -725,6 +727,7 @@ $('.nav_rm').click(function(){
     position:"last"
    })
 
+} // end of don't show grid if
 }); // end of big long function 
 
 // post load events

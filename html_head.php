@@ -19,6 +19,7 @@
 <script type="text/javascript">
     var hash = '<?php  echo $user->cookie_hash;?>';
     var begin_date = '<?php echo $begin_date;?>';
+    <?php if($nogd == true) echo 'var nogd = true;';?>
     <?php if($result['count'] < 1) {
         echo 'var no_plot = true;';
     } else {
