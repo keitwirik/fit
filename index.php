@@ -1,9 +1,9 @@
 <?php
 
 require_once('app_top.php');
-require_once('dbo.php');
+//require_once('dbo.php');
 require_once('dbconfig.php');
-require_once('config.php');
+//require_once('config.php');
 
 checkLoggedIn("yes");
 $user_id = getLoggedInUser();

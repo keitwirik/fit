@@ -3,8 +3,8 @@
 include 'app_top.php';
 //include 'config.php';
 include 'dbo.php';
-include 'mappings.php';
-include 'functions.php';
+//include 'mappings.php';
+//include 'functions.php';
 
 if(isset($_GET['u'])){
     $u = $_GET['u'];
